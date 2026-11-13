@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>الإدارة · SAFAR DZ</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="core.css">
+<style>
+header{background:#0b1f17;color:#fff}
+header .w{max-width:1200px;margin:0 auto;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+header .logo small{color:rgba(255,255,255,.6)}
+.w{max-width:1200px;margin:0 auto;padding:18px}
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px}
+.kpi{background:#fff;border-radius:14px;box-shadow:var(--sh);padding:12px 14px;text-align:start}
+.kpi span{font-size:12px;color:var(--mute);font-weight:700}.kpi b{display:block;font-size:24px;font-weight:800}
+.kpi[aria-pressed="true"]{outline:2px solid var(--ink)}
+.bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.search{flex:1;min-width:220px;display:flex;align-items:center;gap:8px;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:0 12px;height:44px}
+.search input{flex:1;border:0;outline:0;background:none}
+.list{display:grid;gap:10px}
+.it{background:#fff;border-radius:16px;box-shadow:var(--sh);padding:14px;display:grid;grid-template-columns:1fr auto;gap:12px}
+.it h3{margin:0;font-size:16px;font-weight:800;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.it .meta{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12.5px;color:var(--ink2);margin-top:6px}
+.it .meta span{display:inline-flex;gap:4px;align-items:center}
+.it .meta svg.i{width:14px;height:14px;color:var(--mute)}
+.it .acts{display:flex;gap:6px;flex-wrap:wrap;align-items:flex-start;justify-content:flex-end;max-width:420px}
+.doc{width:100%;max-height:70vh;object-fit:contain;border-radius:12px;background:var(--bg)}
+@media (max-width:760px){.kpis{grid-template-columns:repeat(3,1fr)}.it{grid-template-columns:1fr}.it .acts{justify-content:flex-start}}
+</style>
+</head>
+<body>
+<header><div class="w"><span class="logo"><b data-i="shield"></b><span>SAFAR DZ<small>لوحة الإدارة</small></span></span><div style="display:flex;gap:6px"><a class="btn b-sm" style="background:rgba(255,255,255,.12);color:#fff" href="./" target="_blank">السوق</a><button class="btn b-sm" style="background:rgba(255,255,255,.12);color:#fff" id="out"><span data-i="logout"></span>خروج</button></div></div></header>
+<main class="w" id="main"><div class="loading"><span class="spin"></span></div></main>
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mt"><div class="in" id="mb"></div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="core.js"></script>
+<script>
+paintIcons();
+const M=$("main");let ROWS=[],F="pending",Q="";
+$("out").onclick=async()=>{await sb.auth.signOut();location.replace("join.html?m=in");};
+async function boot(){
+  const {data:{session}}=await sb.auth.getSession();if(!session){location.replace("join.html?m=in");return;}
+  const {data:isA}=await sb.rpc("safar_is_admin");
+  if(!isA){M.innerHTML=`<div class="box" style="text-align:center;max-width:480px;margin:40px auto"><h2 style="margin:0 0 6px">ما عندكش الصلاحية</h2><p style="color:var(--mute)">هذي الصفحة لفريق SAFAR DZ برك.</p><a class="btn b-main" href="dashboard.html">رجوع للوحة متجري</a></div>`;return;}
+  await load();
+}
+async function load(){const {data,error}=await sb.rpc("safar_admin_list");if(error){M.innerHTML=`<div class="msg err">${esc(ar(error))}</div>`;return;}ROWS=data||[];draw();}
+function draw(){
+  const c=s=>ROWS.filter(r=>s==="all"||r.status===s).length;
+  const L=ROWS.filter(r=>(F==="all"||r.status===F)&&(!Q||[r.name,r.slug,r.email,r.phone,r.full_name].join(" ").toLowerCase().includes(Q)));
+  M.innerHTML=`<div class="kpis">${[["pending","في الانتظار"],["active","مفعّلة"],["suspended","موقوفة"],["rejected","مرفوضة"],["all","الكل"]].map(([k,t])=>`<button class="kpi" data-f="${k}" aria-pressed="${F===k}"><span>${t}</span><b class="num">${c(k)}</b></button>`).join("")}</div>
+  <div class="bar"><label class="search">${ic("search")}<input id="q" placeholder="ابحث: اسم، رابط، بريد، هاتف…" value="${esc(Q)}"></label><button class="btn b-line" id="rf">تحديث</button></div>
+  <div class="list">${L.map(r=>{const exp=r.paid_until&&r.paid_until<new Date().toISOString().slice(0,10);
+    return `<div class="it"><div><h3>${esc(r.name)} <span class="chip st-${r.status}"><i></i>${STATUS[r.status]}</span>${exp?'<span class="chip st-rejected"><i></i>الاشتراك فات</span>':""}</h3>
+    <div class="meta"><span>${ic("link")}<a href="${esc(SITE+r.slug)}" target="_blank" rel="noopener" class="num" style="color:var(--brand-d)">/${esc(r.slug)}</a></span><span>${ic("mail")}<span class="num">${esc(r.email||"—")}</span></span><span>${ic("chat")}<span class="num">${esc(r.phone||"—")}</span></span><span>${ic("store")}${esc(W[r.wilaya-1]||"—")}</span><span>${ic("box")}${r.products} منتج</span><span>${ic("clock")}${new Date(r.created_at).toLocaleDateString("ar-DZ")}</span></div>
+    <div class="meta"><span>${ic("id")}${esc(r.full_name||"—")} · <span class="num">${esc(r.card_number||"—")}</span></span><span>الاشتراك حتى: <b class="num">${esc(r.paid_until||"—")}</b></span>${r.admin_note?`<span>ملاحظة: ${esc(r.admin_note)}</span>`:""}</div></div>
+    <div class="acts">${r.card_path?`<button class="btn b-line b-sm" data-doc="${esc(r.card_path)}">${ic("id")}البطاقة</button>`:""}
+      ${r.status!=="active"?`<button class="btn b-main b-sm" data-st="active" data-id="${r.id}">${ic("check")}تفعيل</button>`:`<button class="btn b-line b-sm" data-st="suspended" data-id="${r.id}">إيقاف</button>`}
+      ${r.status==="pending"?`<button class="btn b-red b-sm" data-st="rejected" data-id="${r.id}">رفض</button>`:""}
+      <button class="btn b-dark b-sm" data-pay="${r.id}">+30 يوم</button><button class="btn b-line b-sm" data-note="${r.id}">ملاحظة</button></div></div>`;}).join("")||`<div class="box" style="text-align:center;color:var(--mute)">ما كاين حتى متجر هنا.</div>`}</div>`;
+  paintIcons(M);
+  M.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{F=b.dataset.f;draw();});
+  $("q").oninput=e=>{Q=e.target.value.trim().toLowerCase();const p=e.target.selectionStart;draw();$("q").focus();$("q").setSelectionRange(p,p);};
+  $("rf").onclick=load;
+  M.querySelectorAll("[data-st]").forEach(b=>b.onclick=async()=>{const st=b.dataset.st;
+    if(st==="rejected"){const n=prompt("سبب الرفض (يشوفو المستورد):","");if(n===null)return;await note(b.dataset.id,n);}
+    busy(b,true);const {error}=await sb.from("importers").update({status:st}).eq("id",b.dataset.id);if(error){busy(b,false);return toast(ar(error));}toast("تبدلت الحالة");load();});
+  M.querySelectorAll("[data-pay]").forEach(b=>b.onclick=async()=>{const r=ROWS.find(x=>x.id===b.dataset.pay);const base=r.paid_until&&r.paid_until>new Date().toISOString().slice(0,10)?new Date(r.paid_until):new Date();
+    base.setDate(base.getDate()+30);busy(b,true);const {error}=await sb.from("importers").update({paid_until:base.toISOString().slice(0,10)}).eq("id",r.id);if(error){busy(b,false);return toast(ar(error));}toast("زدنا 30 يوم");load();});
+  M.querySelectorAll("[data-note]").forEach(b=>b.onclick=async()=>{const r=ROWS.find(x=>x.id===b.dataset.note);const n=prompt("ملاحظة للمستورد:",r.admin_note||"");if(n===null)return;await note(r.id,n);load();});
+  M.querySelectorAll("[data-doc]").forEach(b=>b.onclick=async()=>{busy(b,true);const {data,error}=await sb.storage.from("safar-docs").createSignedUrl(b.dataset.doc,120);busy(b,false);if(error)return toast(ar(error));
+    const pdf=/\.pdf$/i.test(b.dataset.doc);$("mb").innerHTML=`<div class="mh"><h3 id="mt">بطاقة المستورد</h3><button class="ib" id="mx" aria-label="إغلاق">${ic("x")}</button></div>${pdf?`<a class="btn b-main w100" href="${esc(data.signedUrl)}" target="_blank" rel="noopener">افتح الـ PDF</a>`:`<img class="doc" src="${esc(data.signedUrl)}" alt="بطاقة المستورد">`}<p class="hint" style="color:var(--mute);font-size:12px">الرابط يخدم دقيقتين برك، وما يشوفو حتى واحد غيرك.</p>`;
+    $("modal").classList.add("open");$("mx").onclick=()=>$("modal").classList.remove("open");});
+}
+async function note(id,text){const {error}=await sb.from("importer_docs").upsert({importer_id:id,admin_note:text.trim()||null},{onConflict:"importer_id"});if(error)toast(ar(error));}
+$("modal").onclick=e=>{if(e.target.id==="modal")$("modal").classList.remove("open");};
+boot();
+</script>
+</body>
+</html>

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>لوحة المتجر · SAFAR DZ</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#ffffff">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="core.css">
+<style>
+.app{display:grid;grid-template-columns:250px 1fr;min-height:100vh}
+nav.sidenav{background:#fff;border-inline-end:1px solid var(--line);padding:20px 14px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:4px}
+nav.sidenav .logo{margin:0 6px 22px}
+.nv{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;font-weight:700;color:var(--ink2);width:100%;text-align:start}
+.nv:hover{background:var(--bg)}
+.nv[aria-current="page"]{background:var(--ink);color:#fff}
+.nv .n{margin-inline-start:auto;font-size:11.5px;background:var(--bg);color:var(--ink2);border-radius:999px;padding:0 8px}
+.nv[aria-current="page"] .n{background:rgba(255,255,255,.2);color:#fff}
+.sidenav .sp{flex:1}
+.content{padding:22px clamp(14px,3vw,34px) 100px;max-width:1100px;width:100%}
+.head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.head h1{margin:0;font-size:24px;font-weight:800}
+.head .sub{color:var(--mute);font-size:13px}
+.banner{display:flex;gap:12px;align-items:flex-start;border-radius:16px;padding:14px 16px;margin-bottom:16px}
+.banner b{display:block}
+.banner.pending{background:var(--warn-l);color:#6b4100}.banner.rejected{background:#fff0ec;color:#8a1c14}.banner.suspended{background:#f1f2f4;color:#374151}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.stat{background:#fff;border-radius:16px;box-shadow:var(--sh);padding:14px 16px}
+.stat span{font-size:12.5px;color:var(--mute);font-weight:700}
+.stat b{display:block;font-size:26px;font-weight:800;margin-top:2px}
+.linkbox{display:flex;align-items:center;gap:10px;background:var(--bg);border-radius:12px;padding:6px 6px 6px 12px;direction:ltr}
+.linkbox code{flex:1;font:600 13.5px var(--f);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.todo{display:grid;gap:8px;margin-top:12px}
+.todo button{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:12px;padding:12px;text-align:start;background:#fff}
+.todo .ck{width:24px;height:24px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;flex:none}
+.todo .done .ck{background:var(--brand);border-color:var(--brand);color:#fff}
+.todo .ck svg.i{width:14px;height:14px}
+.todo b{display:block;font-size:13.5px}.todo span{font-size:12.5px;color:var(--mute)}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.search{flex:1;min-width:200px;display:flex;align-items:center;gap:8px;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:0 12px;height:44px}
+.search input{flex:1;border:0;outline:0;background:none;min-width:0}
+.plist{display:grid;gap:8px}
+.prow{display:grid;grid-template-columns:64px 1fr auto;gap:12px;align-items:center;background:#fff;border-radius:14px;box-shadow:var(--sh);padding:10px}
+.prow img,.prow .noimg{width:64px;height:64px;border-radius:11px;object-fit:cover;background:var(--bg);display:grid;place-items:center;color:var(--mute)}
+.prow h4{margin:0;font-size:14px;font-weight:700;line-height:1.4;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.prow .m{font-size:12.5px;color:var(--mute);display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:2px}
+.prow .acts{display:flex;gap:4px}
+.qchip{font-size:11.5px;font-weight:800;border-radius:999px;padding:1px 8px}
+.q-ok{background:var(--brand-l);color:var(--brand-d)}.q-low{background:var(--warn-l);color:var(--warn)}.q-out{background:#fff0ec;color:#b3261e}
+.empty{text-align:center;padding:40px 16px;color:var(--mute)}
+.empty .ic{width:64px;height:64px;border-radius:50%;background:#fff;display:grid;place-items:center;margin:0 auto 10px;box-shadow:var(--sh)}
+.empty svg.i{width:28px;height:28px}
+.imgpick{display:flex;gap:12px;align-items:center}
+.imgpick .ph{width:96px;height:96px;border-radius:14px;background:var(--bg);overflow:hidden;display:grid;place-items:center;color:var(--mute);flex:none}
+.imgpick .ph img{width:100%;height:100%;object-fit:cover}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.trow{display:grid;grid-template-columns:1fr 1fr auto auto;gap:8px;align-items:center;margin-bottom:8px}
+.trow select,.trow input{height:42px;border:1.5px solid var(--line);border-radius:10px;padding:0 10px;background:#fff;width:100%}
+.sec-t{font-size:15px;font-weight:800;margin:0 0 4px}
+.sec-d{font-size:12.5px;color:var(--mute);margin:0 0 12px}
+.bnav{display:none}
+@media (max-width:860px){
+  .app{grid-template-columns:1fr}
+  nav.sidenav{display:none}
+  .bnav{display:grid;grid-template-columns:repeat(4,1fr);position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);z-index:40;padding-bottom:env(safe-area-inset-bottom)}
+  .bnav button{display:flex;flex-direction:column;align-items:center;gap:1px;font-size:11px;font-weight:700;color:var(--mute);padding:8px 0}
+  .bnav button[aria-current="page"]{color:var(--ink)}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .mtop{display:flex!important}
+}
+.mtop{display:none;align-items:center;justify-content:space-between;padding:12px 14px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:30}
+@media (max-width:560px){.g3{grid-template-columns:1fr 1fr}.trow{grid-template-columns:1fr 1fr}.prow{grid-template-columns:56px 1fr}.prow img,.prow .noimg{width:56px;height:56px}.prow .acts{grid-column:1/-1;justify-content:flex-end}}
+</style>
+</head>
+<body>
+<div class="mtop"><a class="logo" href="./"><b data-i="plane"></b><span id="m-name">SAFAR DZ<small>لوحة المتجر</small></span></a><button class="ib" id="m-out" aria-label="خروج"><span data-i="logout"></span></button></div>
+<div class="app">
+  <nav class="sidenav" aria-label="لوحة المتجر">
+    <a class="logo" href="./"><b data-i="plane"></b><span>SAFAR DZ<small>لوحة المتجر</small></span></a>
+    <button class="nv" data-v="home"><span data-i="home"></span>الرئيسية</button>
+    <button class="nv" data-v="goods"><span data-i="box"></span>السلعة<span class="n num" id="n-goods">0</span></button>
+    <button class="nv" data-v="trips"><span data-i="plane"></span>السفرات والعروض</button>
+    <button class="nv" data-v="settings"><span data-i="settings"></span>معلومات المتجر</button>
+    <div class="sp"></div>
+    <a class="nv" id="nv-store" href="#" target="_blank" rel="noopener"><span data-i="store"></span>شوف متجري</a>
+    <button class="nv" id="out"><span data-i="logout"></span>خروج</button>
+  </nav>
+  <main class="content" id="main"><div class="loading"><span class="spin"></span></div></main>
+</div>
+<nav class="bnav" aria-label="لوحة المتجر">
+  <button data-v="home"><span data-i="home"></span>الرئيسية</button>
+  <button data-v="goods"><span data-i="box"></span>السلعة</button>
+  <button data-v="trips"><span data-i="plane"></span>السفرات</button>
+  <button data-v="settings"><span data-i="settings"></span>المتجر</button>
+</nav>
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mt"><div class="in" id="mb"></div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="core.js"></script>
+<script>
+paintIcons();
+let IMP=null,PR=[],VIEW=(location.hash||"#home").slice(1),Q="";
+const M=$("main");
+const storeUrl=()=>SITE+IMP.slug;
+async function boot(){
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){location.replace("join.html?m=in");return;}
+  const {data,error}=await sb.from("importers").select("*").eq("owner_id",session.user.id).maybeSingle();
+  if(error){M.innerHTML=`<div class="msg err">${esc(ar(error))}</div>`;return;}
+  if(!data){location.replace("join.html");return;}
+  IMP=data;IMP.meta=IMP.meta||{};
+  $("nv-store").href=storeUrl();$("m-name").innerHTML=esc(IMP.name)+"<small>لوحة المتجر</small>";
+  await loadProducts();show(VIEW);
+}
+async function loadProducts(){const {data,error}=await sb.from("products").select("*").eq("importer_id",IMP.id).order("sort").order("created_at");if(error){toast(ar(error));return;}PR=data||[];$("n-goods").textContent=PR.length;}
+function show(v){VIEW=["home","goods","trips","settings"].includes(v)?v:"home";history.replaceState(null,"","#"+VIEW);
+  document.querySelectorAll("[data-v]").forEach(b=>b.setAttribute("aria-current",b.dataset.v===VIEW?"page":"false"));
+  ({home:vHome,goods:vGoods,trips:vTrips,settings:vSettings})[VIEW]();paintIcons(M);scrollTo({top:0});}
+document.querySelectorAll("[data-v]").forEach(b=>b.onclick=()=>show(b.dataset.v));
+const logout=async()=>{await sb.auth.signOut();location.replace("join.html?m=in");};
+$("out").onclick=logout;$("m-out").onclick=logout;
+
+function banner(){const s=IMP.status;if(s==="active")return"";
+  const T={pending:["clock","متجرك في المراجعة","حضّر سلعتك درك. كي نفعّلو المتجر، الزبائن يشوفوها مباشرة."],rejected:["x","ما تفعّلش المتجر","تواصل مع فريق SAFAR DZ باش نصلحو المشكل."],suspended:["clock","المتجر موقوف","الزبائن ما يشوفوش متجرك درك. تواصل معانا."]}[s];
+  return `<div class="banner ${s}">${ic(T[0])}<div><b>${T[1]}</b>${T[2]}</div></div>`;}
+
+/* ===== home ===== */
+function vHome(){
+  const out=PR.filter(p=>p.stock_qty<=0).length,low=PR.filter(p=>p.stock_qty>0&&p.stock_qty<=5).length,val=PR.reduce((a,p)=>a+p.price*p.stock_qty,0);
+  const m=IMP.meta,todo=[["goods",PR.length>0,"زيد أول منتج","صورة، اسم، وسعر الحبة والجملة"],["trips",(m.arrived||[]).length>0||(m.next||[]).length>0,"زيد سفراتك","السفرة اللي وصلت واللي جاية، للحجز المسبق"],["settings",!!IMP.tagline,"كمّل معلومات المتجر","التعريف ورقم الاتصال"]];
+  M.innerHTML=`${banner()}<div class="head"><div><h1>مرحبا، ${esc(IMP.name)}</h1><div class="sub">${esc(W[IMP.wilaya-1]||"")} · <span class="chip st-${IMP.status}"><i></i>${STATUS[IMP.status]}</span>${IMP.paid_until?` · الاشتراك حتى <span class="num">${esc(IMP.paid_until)}</span>`:""}</div></div>
+  <button class="btn b-main" id="add1">${ic("plus")}منتج جديد</button></div>
+  <div class="stats"><div class="stat"><span>المنتجات</span><b class="num">${PR.length}</b></div><div class="stat"><span>نفدت</span><b class="num" style="color:#b3261e">${out}</b></div><div class="stat"><span>باقي قليل (5 ولا أقل)</span><b class="num" style="color:var(--warn)">${low}</b></div><div class="stat"><span>قيمة المخزون</span><b><span class="num">${fmt(val)}</span> <small style="font-size:14px">دج</small></b></div></div>
+  <div class="box" style="margin-bottom:16px"><p class="sec-t">رابط متجرك</p><p class="sec-d">${IMP.status==="active"?"ابعثو للزبائن والمحلات، وحطو في الإنستغرام والفيسبوك.":"الرابط يخدم للزبائن كي يتفعّل المتجر."}</p>
+    <div class="linkbox"><code>${esc(storeUrl())}</code><button class="btn b-dark b-sm" id="cp">${ic("copy")}نسخ</button></div>
+    <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap"><a class="btn b-line b-sm" href="${esc(storeUrl())}" target="_blank" rel="noopener">${ic("store")}شوف متجري</a><a class="btn b-line b-sm" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent("شوفو سلعتنا الجديدة 👇\n"+storeUrl())}">${ic("chat")}شارك على واتساب</a></div></div>
+  <div class="box"><p class="sec-t">ابدأ من هنا</p><p class="sec-d">3 خطوات ومتجرك يولي جاهز.</p><div class="todo">${todo.map(([v,d,t,s])=>`<button data-go="${v}" class="${d?"done":""}"><span class="ck">${d?ic("check"):""}</span><div><b>${t}</b><span>${s}</span></div></button>`).join("")}</div></div>`;
+  $("add1").onclick=()=>editProduct(null);
+  $("cp").onclick=async()=>{try{await navigator.clipboard.writeText(storeUrl());toast("نسخنا الرابط");}catch(e){}};
+  M.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>show(b.dataset.go));
+}
+
+/* ===== products ===== */
+function vGoods(){
+  M.innerHTML=`${banner()}<div class="head"><div><h1>السلعة</h1><div class="sub">${PR.length} منتج · الحد الأقصى 500</div></div><button class="btn b-main" id="add">${ic("plus")}منتج جديد</button></div>
+  <div class="tools"><label class="search">${ic("search")}<input id="q" placeholder="ابحث في سلعتك…" value="${esc(Q)}"></label></div><div class="plist" id="pl"></div>`;
+  $("add").onclick=()=>editProduct(null);$("q").oninput=e=>{Q=e.target.value.trim().toLowerCase();list();};list();
+}
+function list(){
+  const L=PR.filter(p=>!Q||(p.name+" "+(p.category||"")).toLowerCase().includes(Q));
+  $("pl").innerHTML=L.length?L.map(p=>{const q=p.stock_qty<=0?["q-out","نفدت"]:p.stock_qty<=5?["q-low","باقي "+p.stock_qty]:["q-ok","متوفر "+p.stock_qty];
+    return `<div class="prow">${p.image_url?`<img src="${esc(p.image_url)}" alt="" loading="lazy">`:`<span class="noimg">${ic("box")}</span>`}<div><h4>${esc(p.name)}</h4><div class="m"><b style="color:var(--ink)"><span class="num">${fmt(p.price)}</span> دج</b>${p.w6?`<span>جملة 6+: <span class="num">${fmt(p.w6)}</span></span>`:""}<span class="qchip ${q[0]}">${q[1]}</span>${p.trip?`<span>${esc(TRIPN[p.trip])}</span>`:""}${p.category?`<span>${esc(p.category)}</span>`:""}</div></div>
+    <div class="acts"><button class="btn b-line b-sm" data-e="${p.id}">${ic("edit")}تعديل</button><button class="btn b-red b-sm" data-d="${p.id}" aria-label="حذف">${ic("trash")}</button></div></div>`;}).join("")
+    :`<div class="empty"><div class="ic">${ic("box")}</div><b style="color:var(--ink)">${Q?"ما لقيناش":"ما زال ما زدتش سلعة"}</b><br>${Q?"":"اضغط «منتج جديد» وزيد صورة واسم وسعر."}</div>`;
+  $("pl").querySelectorAll("[data-e]").forEach(b=>b.onclick=()=>editProduct(PR.find(p=>p.id===b.dataset.e)));
+  $("pl").querySelectorAll("[data-d]").forEach(b=>b.onclick=async()=>{if(!b.dataset.armed){b.dataset.armed=1;b.innerHTML="متأكد؟";setTimeout(()=>{if(b.isConnected){delete b.dataset.armed;b.innerHTML=ic("trash");}},3000);return;}
+    busy(b,true);const p=PR.find(x=>x.id===b.dataset.d);const {error}=await sb.from("products").delete().eq("id",p.id);if(error){busy(b,false);return toast(ar(error));}
+    if(p.image_url&&p.image_url.includes("/safar-media/")){const path=p.image_url.split("/safar-media/")[1];sb.storage.from("safar-media").remove([path]);}
+    await loadProducts();list();toast("تحذف المنتج");});
+}
+function closeModal(){$("modal").classList.remove("open");}
+$("modal").onclick=e=>{if(e.target.id==="modal")closeModal();};
+addEventListener("keydown",e=>{if(e.key==="Escape")closeModal();});
+function editProduct(p){
+  const n=!p;p=p||{name:"",category:"",price:"",old_price:"",w6:"",w24:"",stock_qty:1,trip:"",badge:"new",options:[],description:"",image_url:""};
+  let img=p.image_url||"";
+  $("mb").innerHTML=`<div class="mh"><h3 id="mt">${n?"منتج جديد":"تعديل المنتج"}</h3><button class="ib" id="mx" aria-label="إغلاق">${ic("x")}</button></div>
+  <form class="form" id="pf" novalidate>
+    <div class="imgpick"><span class="ph" id="pi">${img?`<img src="${esc(img)}" alt="">`:ic("box","width:30px;height:30px")}</span><div style="display:grid;gap:6px"><label class="btn b-dark b-sm" style="position:relative;overflow:hidden">${ic("upload")}${img?"بدّل الصورة":"زيد صورة"}<input type="file" id="pfile" accept="image/*" style="position:absolute;inset:0;opacity:0;cursor:pointer"></label><span class="hint" style="font-size:12px;color:var(--mute)">صورة مربعة وواضحة، على خلفية بيضاء خير.</span></div></div>
+    <div class="fld"><label for="p-n">اسم المنتج</label><input id="p-n" maxlength="120" value="${esc(p.name)}" placeholder="مثلاً: عطر رجالي Oud · 100 مل"></div>
+    <div class="g2"><div class="fld"><label for="p-c">القسم</label><select id="p-c"><option value="">اختار…</option>${CATS.map(c=>`<option${c===p.category?" selected":""}>${c}</option>`).join("")}</select></div>
+    <div class="fld"><label for="p-t">من أي سفرة؟</label><select id="p-t"><option value="">—</option>${Object.keys(TRIPN).map(c=>`<option value="${c}"${c===p.trip?" selected":""}>${TRIPN[c]}</option>`).join("")}</select></div></div>
+    <div class="g3"><div class="fld"><label for="p-p">سعر الحبة (دج)</label><input id="p-p" type="number" inputmode="numeric" min="0" value="${p.price??""}"></div>
+    <div class="fld"><label for="p-o">قبل التخفيض</label><input id="p-o" type="number" inputmode="numeric" min="0" value="${p.old_price??""}" placeholder="اختياري"></div>
+    <div class="fld"><label for="p-q">الكمية المتوفرة</label><input id="p-q" type="number" inputmode="numeric" min="0" value="${p.stock_qty??0}"></div></div>
+    <div class="g2"><div class="fld"><label for="p-w6">سعر الجملة 6+ قطع</label><input id="p-w6" type="number" inputmode="numeric" min="0" value="${p.w6??""}" placeholder="اختياري"></div>
+    <div class="fld"><label for="p-w24">سعر الجملة 24+ قطعة</label><input id="p-w24" type="number" inputmode="numeric" min="0" value="${p.w24??""}" placeholder="اختياري"></div></div>
+    <div class="fld"><label for="p-op">الاختيارات (المقاسات ولا الألوان)</label><input id="p-op" value="${esc((p.options||[]).join("، "))}" placeholder="مثلاً: 40، 41، 42 ولا أسود، أبيض"><span class="hint">فرّق بينهم بفاصلة.</span></div>
+    <div class="fld"><label for="p-d">الوصف</label><textarea id="p-d" rows="3" maxlength="2000">${esc(p.description||"")}</textarea></div>
+    <label class="chk" style="display:flex;gap:8px;align-items:center;font-weight:700"><input type="checkbox" id="p-new"${p.badge==="new"?" checked":""} style="width:18px;height:18px;accent-color:var(--brand)"> علامة «وصل جديد»</label>
+    <div class="msg" id="pm"></div>
+    <button class="btn b-main w100" id="ps">${n?"زيد المنتج":"حفظ التعديل"}</button>
+  </form>`;
+  $("modal").classList.add("open");$("mx").onclick=closeModal;
+  $("pfile").onchange=async e=>{const f=e.target.files[0];if(!f)return;$("pi").innerHTML='<span class="spin"></span>';msg("pm","");
+    try{img=await uploadMedia(IMP.id,f);$("pi").innerHTML=`<img src="${esc(img)}" alt="">`;}catch(err){$("pi").innerHTML=ic("box");msg("pm",ar(err));}};
+  const num=id=>{const v=$(id).value.trim();return v===""?null:Math.max(0,Math.round(+v));};
+  $("pf").onsubmit=async e=>{e.preventDefault();
+    const row={importer_id:IMP.id,name:$("p-n").value.trim(),category:$("p-c").value||null,trip:$("p-t").value||null,price:num("p-p"),old_price:num("p-o"),stock_qty:num("p-q")??0,w6:num("p-w6"),w24:num("p-w24"),
+      options:$("p-op").value.split(/[،,]/).map(s=>s.trim()).filter(Boolean).slice(0,20),description:$("p-d").value.trim()||null,badge:$("p-new").checked?"new":null,image_url:img||null};
+    if(!row.name)return msg("pm","اكتب اسم المنتج.");if(row.price==null||row.price<=0)return msg("pm","اكتب سعر الحبة.");
+    if(row.old_price!=null&&row.old_price<=row.price)row.old_price=null;
+    if(row.w6!=null&&row.w6>=row.price)return msg("pm","سعر الجملة 6+ لازم يكون أقل من سعر الحبة.");
+    if(row.w24!=null&&row.w24>=(row.w6||row.price))return msg("pm","سعر 24+ لازم يكون أقل من سعر 6+.");
+    if(!img)return msg("pm","زيد صورة للمنتج. بلا صورة ما يبيعش.");
+    busy($("ps"),true);
+    const r=n?await sb.from("products").insert({...row,sort:PR.length}):await sb.from("products").update(row).eq("id",p.id);
+    if(r.error){busy($("ps"),false);return msg("pm",ar(r.error));}
+    closeModal();await loadProducts();toast(n?"زدنا المنتج":"تحفظ");if(VIEW==="goods")list();else show("goods");};
+}
+
+/* ===== trips & banner ===== */
+function vTrips(){
+  const m=IMP.meta;m.arrived=m.arrived||[];m.next=m.next||[];m.hero=m.hero||{};
+  const sel=(v)=>Object.keys(TRIPN).map(c=>`<option value="${c}"${c===v?" selected":""}>${TRIPN[c]}</option>`).join("");
+  M.innerHTML=`${banner()}<div class="head"><div><h1>السفرات والعروض</h1><div class="sub">هذا اللي يبان في الخريطة وفي أعلى متجرك.</div></div></div>
+  <div class="box" style="margin-bottom:14px"><p class="sec-t">السفرات اللي وصلت</p><p class="sec-d">كل سفرة تولي بطاقة بصورة المدينة، وتربط بيها السلعة.</p><div id="ar"></div><button class="btn b-line b-sm" id="ar-add">${ic("plus")}سفرة وصلت</button></div>
+  <div class="box" style="margin-bottom:14px"><p class="sec-t">السفرات الجاية (الحجز المسبق)</p><p class="sec-d">المحلات تحجز عندك قبل ما تسافر.</p><div id="nx"></div><button class="btn b-line b-sm" id="nx-add">${ic("plus")}سفرة جاية</button></div>
+  <div class="box" style="margin-bottom:14px"><p class="sec-t">البانر وعروض الوصول</p><div class="form">
+    <div class="fld"><label for="h-e">السطر الصغير</label><input id="h-e" maxlength="60" value="${esc(m.hero.eye||"")}" placeholder="وصلت سفرة إسطنبول · 12 نوفمبر"></div>
+    <div class="fld"><label for="h-h">العنوان الكبير</label><input id="h-h" maxlength="60" value="${esc(String(m.hero.h||"").replace(/\n/g," "))}"></div>
+    <div class="fld"><label for="h-p">الوصف</label><input id="h-p" maxlength="140" value="${esc(m.hero.p||"")}"></div>
+    <div class="fld"><label for="h-d">عروض الوصول تنتهي يوم</label><input id="h-d" type="datetime-local" value="${esc(String(m.dealEnd||"").slice(0,16))}"><span class="hint">العداد يبان فوق التخفيضات. خليه فارغ إذا ما عندكش عرض.</span></div>
+  </div></div>
+  <div class="msg" id="tm"></div><button class="btn b-main w100" id="ts">حفظ السفرات والعروض</button>`;
+  const draw=()=>{
+    $("ar").innerHTML=m.arrived.map((t,i)=>`<div class="trow"><select data-a="${i}" data-k="code">${sel(t.code)}</select><input type="date" data-a="${i}" data-k="date" value="${esc(t.date||"")}"><span></span><button class="ib" data-ra="${i}" aria-label="حذف">${ic("trash")}</button></div>`).join("")||'<p class="sec-d">ما كاين حتى سفرة.</p>';
+    $("nx").innerHTML=m.next.map((t,i)=>`<div class="trow"><select data-n="${i}" data-k="code">${sel(t.code)}</select><input type="date" data-n="${i}" data-k="date" value="${esc(t.date||"")}"><select data-n="${i}" data-k="open"><option value="1"${t.open?" selected":""}>الحجز مفتوح</option><option value="0"${t.open?"":" selected"}>قريباً</option></select><button class="ib" data-rn="${i}" aria-label="حذف">${ic("trash")}</button></div>`).join("")||'<p class="sec-d">ما كاين حتى سفرة.</p>';
+    M.querySelectorAll("[data-a]").forEach(f=>f.onchange=()=>{m.arrived[+f.dataset.a][f.dataset.k]=f.value;});
+    M.querySelectorAll("[data-n]").forEach(f=>f.onchange=()=>{m.next[+f.dataset.n][f.dataset.k]=f.dataset.k==="open"?+f.value:f.value;});
+    M.querySelectorAll("[data-ra]").forEach(b=>b.onclick=()=>{m.arrived.splice(+b.dataset.ra,1);draw();});
+    M.querySelectorAll("[data-rn]").forEach(b=>b.onclick=()=>{m.next.splice(+b.dataset.rn,1);draw();});};
+  draw();
+  const today=new Date().toISOString().slice(0,10);
+  $("ar-add").onclick=()=>{if(m.arrived.length>=6)return toast("6 سفرات كحد أقصى");m.arrived.unshift({code:"IST",date:today});draw();};
+  $("nx-add").onclick=()=>{if(m.next.length>=6)return toast("6 سفرات كحد أقصى");m.next.push({code:"IST",date:today,open:1});draw();};
+  $("ts").onclick=async()=>{
+    m.next.forEach(n=>n.city=TRIPN[n.code]);m.hero.eye=$("h-e").value.trim();m.hero.h=$("h-h").value.trim();m.hero.p=$("h-p").value.trim();
+    m.dealEnd=$("h-d").value?$("h-d").value+":00+01:00":null;
+    busy($("ts"),true);const {error}=await sb.from("importers").update({meta:m}).eq("id",IMP.id);busy($("ts"),false);
+    if(error)return msg("tm",ar(error));msg("tm","");toast("تحفظت السفرات والعروض");};
+}
+
+/* ===== store settings ===== */
+function vSettings(){
+  M.innerHTML=`${banner()}<div class="head"><div><h1>معلومات المتجر</h1><div class="sub">رابط المتجر: <span class="num">${esc(storeUrl())}</span> (ما يتبدلش)</div></div></div>
+  <div class="box" style="margin-bottom:14px"><form class="form" id="sf" novalidate>
+    <div class="fld"><label for="s-n">اسم المتجر</label><input id="s-n" maxlength="60" value="${esc(IMP.name)}"></div>
+    <div class="fld"><label for="s-t">التعريف</label><textarea id="s-t" rows="3" maxlength="400">${esc(IMP.tagline||"")}</textarea></div>
+    <div class="g2"><div class="fld"><label for="s-p">واتساب الطلبات</label><input id="s-p" type="tel" dir="ltr" value="${esc(IMP.phone||"")}"></div><div class="fld"><label for="s-c">رقم الاتصال</label><input id="s-c" type="tel" dir="ltr" value="${esc(IMP.call_phone||"")}"></div></div>
+    <div class="g2"><div class="fld"><label for="s-w">الولاية</label><select id="s-w">${wilOpts(IMP.wilaya)}</select></div><div class="fld"><label for="s-a">المدينة / البلدية</label><input id="s-a" maxlength="120" value="${esc(IMP.address||"")}"></div></div>
+    <div class="msg" id="sm"></div><button class="btn b-main w100" id="ss">حفظ</button></form></div>
+  <div class="box"><p class="sec-t">الأمان</p><p class="sec-d">بدّل كلمة السر. استعمل وحدة ما تستعملهاش في حتى موقع آخر.</p>
+    <form class="form" id="pwf"><div class="fld"><label for="np">كلمة سر جديدة</label><input id="np" type="password" dir="ltr" autocomplete="new-password" minlength="8"></div><div class="msg" id="pwm"></div><button class="btn b-dark" id="pwb">بدّل كلمة السر</button></form></div>`;
+  $("sf").onsubmit=async e=>{e.preventDefault();const ph=normPhone($("s-p").value),cp=normPhone($("s-c").value);
+    if($("s-n").value.trim().length<2)return msg("sm","اكتب اسم المتجر.");if(!phoneOk(ph))return msg("sm","رقم واتساب لازم 10 أرقام ويبدا بـ 05 ولا 06 ولا 07.");if(cp&&!/^0\d{8,9}$/.test(cp))return msg("sm","رقم الاتصال غالط.");
+    const row={name:$("s-n").value.trim(),tagline:$("s-t").value.trim()||null,phone:ph,call_phone:cp||null,wilaya:+$("s-w").value,address:$("s-a").value.trim()||null};
+    busy($("ss"),true);const {data,error}=await sb.from("importers").update(row).eq("id",IMP.id).select().single();busy($("ss"),false);
+    if(error)return msg("sm",ar(error));IMP=data;msg("sm","");toast("تحفظت المعلومات");};
+  $("pwf").onsubmit=async e=>{e.preventDefault();const p=$("np").value;if(p.length<8||!(/\d/.test(p)&&/[a-z]/i.test(p)))return msg("pwm","8 أحرف على الأقل، فيها أرقام وحروف.");
+    busy($("pwb"),true);const {error}=await sb.auth.updateUser({password:p});busy($("pwb"),false);msg("pwm",error?ar(error):"تبدلت كلمة السر.",error?"err":"ok");if(!error)$("np").value="";};
+}
+boot();
+</script>
+</body>
+</html>

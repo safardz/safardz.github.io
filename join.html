@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>افتح متجرك · SAFAR DZ</title>
+<meta name="description" content="افتح متجرك كمستورد مصغر على SAFAR DZ: سلعتك، أسعار الجملة، والطلبات على واتساب. لكل الولايات.">
+<meta name="theme-color" content="#0b1f17">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="core.css">
+<style>
+body{background:#fff}
+.shell{min-height:100vh;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr)}
+.side{background:#0b1f17;color:#fff;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:36px 40px}
+.side::before{content:"";position:absolute;inset:0;background:radial-gradient(600px 400px at 20% 0%,rgba(22,179,110,.25),transparent 60%),radial-gradient(500px 400px at 100% 100%,rgba(255,77,45,.18),transparent 60%)}
+.side>*{position:relative}
+.side .logo small{color:rgba(255,255,255,.6)}
+.mosaic{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:28px 0;transform:rotate(-4deg);max-width:440px}
+.mosaic img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:16px;box-shadow:0 14px 30px rgba(0,0,0,.35)}
+.mosaic img:nth-child(3n+2){transform:translateY(18px)}
+.side h2{font-size:clamp(24px,2.6vw,34px);line-height:1.3;margin:0 0 10px;font-weight:800}
+.side p{margin:0;opacity:.8;max-width:42ch}
+.perks{list-style:none;padding:0;margin:22px 0 0;display:grid;gap:12px}
+.perks li{display:flex;gap:10px;align-items:flex-start;font-size:14px}
+.perks .ic{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.1);display:grid;place-items:center;flex:none;color:#7fe0b4}
+.perks b{display:block}
+.perks span{opacity:.72;font-size:13px}
+.side .foot{font-size:12px;opacity:.55;margin-top:24px}
+.main{display:flex;flex-direction:column;padding:28px clamp(18px,5vw,64px)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.top a.back{display:inline-flex;align-items:center;gap:4px;font-weight:700;font-size:13px;color:var(--ink2);padding:8px 10px;border-radius:10px}
+.top a.back:hover{background:var(--bg)}
+.card{width:100%;max-width:470px;margin:auto;padding:28px 0}
+.card h1{font-size:28px;margin:0 0 6px;font-weight:800;line-height:1.3}
+.card .lead{color:var(--mute);margin:0 0 22px}
+.seg{display:grid;grid-template-columns:1fr 1fr;background:var(--bg);border-radius:13px;padding:4px;margin-bottom:20px}
+.seg button{height:40px;border-radius:10px;font-weight:800;color:var(--mute)}
+.seg button[aria-selected="true"]{background:#fff;color:var(--ink);box-shadow:var(--sh)}
+.meter{height:5px;border-radius:9px;background:var(--line);overflow:hidden;margin-top:6px}
+.meter i{display:block;height:100%;width:0;border-radius:9px;transition:width .3s,background .3s}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:13px}
+.link{color:var(--brand-d);font-weight:700}
+.chk{display:flex;gap:8px;align-items:flex-start;font-size:13px;color:var(--ink2)}
+.chk input{width:18px;height:18px;margin-top:2px;accent-color:var(--brand)}
+.steps{display:flex;gap:6px;margin:0 0 22px}
+.steps div{flex:1}
+.steps i{display:block;height:5px;border-radius:9px;background:var(--line)}
+.steps div.on i{background:var(--brand)}
+.steps span{display:block;font-size:11.5px;font-weight:700;color:var(--mute);margin-top:6px}
+.steps div.on span{color:var(--ink)}
+.state{text-align:center}
+.state .big{width:76px;height:76px;border-radius:50%;display:grid;place-items:center;margin:0 auto 16px}
+.state .big svg.i{width:36px;height:36px}
+.preview{display:flex;gap:12px;align-items:center;background:var(--bg);border-radius:14px;padding:12px;margin-top:6px}
+.preview b{display:block}
+.preview span{font-size:12.5px;color:var(--mute);direction:ltr;display:block;text-align:right}
+@media (max-width:900px){.shell{grid-template-columns:1fr}.side{display:none}.card{padding-top:14px}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <main class="main">
+    <div class="top">
+      <a class="logo" href="./"><b data-i="plane"></b><span>SAFAR DZ<small>سفر ماركت</small></span></a>
+      <a class="back" href="./"><span data-i="right"></span>السوق</a>
+    </div>
+    <div class="card" id="view"><div class="loading"><span class="spin"></span></div></div>
+  </main>
+  <aside class="side" aria-hidden="true">
+    <span class="logo"><b data-i="plane"></b><span>SAFAR DZ<small>منصة المستوردين المصغرين</small></span></span>
+    <div>
+      <div class="mosaic" id="mosaic"></div>
+      <h2>متجرك الإلكتروني جاهز<br>في 5 دقايق</h2>
+      <p>سلعتك من إسطنبول ودبي والصين، قدام الزبائن والمحلات في 58 ولاية.</p>
+      <ul class="perks">
+        <li><span class="ic" data-i="store"></span><div><b>رابط خاص بيك</b><span>safardz.github.io/اسم-متجرك</span></div></li>
+        <li><span class="ic" data-i="chat"></span><div><b>الطلبات توصلك على واتساب</b><span>بالسلعة والكمية والولاية، والدفع عند الاستلام</span></div></li>
+        <li><span class="ic" data-i="box"></span><div><b>سعر الحبة وسعر الجملة</b><span>6+ و24+ قطعة، والسعر يتبدل وحدو</span></div></li>
+        <li><span class="ic" data-i="shield"></span><div><b>متاجر موثقة برك</b><span>نتأكدو من بطاقة المستورد المصغر قبل التفعيل</span></div></li>
+      </ul>
+    </div>
+    <div class="foot">© Hasni Studio · تلمسان</div>
+  </aside>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="core.js"></script>
+<script>
+paintIcons();
+$("mosaic").innerHTML=["1615634260167-c8cdede054de","1620625515032-6ed0c1790c75","1624687943971-e86af76d57de","1618366712010-f4ae9c647dcb","1491553895911-0055eca6402d","1765964492963-b0aa8c172431"].map(i=>`<img src="${U(i,300)}" alt="">`).join("");
+const V=$("view");
+let MODE=new URLSearchParams(location.search).get("m")==="in"?"in":"up";
+let USER=null,IMP=null,DOC=null,STEP=1,DRAFT={};
+
+/* ===== routing ===== */
+async function route(){
+  const {data:{session}}=await sb.auth.getSession();USER=session&&session.user;
+  if(!USER)return authView();
+  const {data,error}=await sb.from("importers").select("*").eq("owner_id",USER.id).maybeSingle();
+  if(error){V.innerHTML=`<div class="msg err">${esc(ar(error))}</div>`;return;}
+  IMP=data;
+  if(!IMP)return wizard();
+  if(IMP.status==="active"){location.replace("dashboard.html");return;}
+  statusView();
+}
+sb.auth.onAuthStateChange((ev)=>{if(ev==="PASSWORD_RECOVERY")resetView();});
+
+/* ===== sign in / sign up ===== */
+function authView(){
+  const up=MODE==="up";
+  V.innerHTML=`<h1>${up?"افتح متجرك على SAFAR DZ":"مرحبا بيك من جديد"}</h1><p class="lead">${up?"أنشئ حساب المستورد. التسجيل مجاني، والمتجر يتفعل بعد التحقق.":"ادخل لحسابك باش تسيّر متجرك وسلعتك."}</p>
+  <div class="seg" role="tablist"><button type="button" role="tab" id="t-up" aria-selected="${up}">حساب جديد</button><button type="button" role="tab" id="t-in" aria-selected="${!up}">دخول</button></div>
+  <form class="form" id="f" novalidate>
+    <div class="fld"><label for="em">البريد الإلكتروني</label><input id="em" type="email" dir="ltr" autocomplete="email" inputmode="email" placeholder="name@gmail.com" required></div>
+    <div class="fld"><label for="pw">كلمة السر</label><div class="pw"><input id="pw" type="password" dir="ltr" autocomplete="${up?"new-password":"current-password"}" required minlength="8"><button type="button" id="eye" aria-label="بيّن كلمة السر">${ic("eye")}</button></div>
+      ${up?'<div class="meter"><i id="mt"></i></div><span class="hint" id="mh">8 أحرف على الأقل، فيها أرقام وحروف.</span>':""}</div>
+    ${up?`<label class="chk"><input type="checkbox" id="tos"><span>أوافق على شروط الاستعمال: نبيع سلعة قانونية، والمعلومات اللي نعطيها صحيحة.</span></label>`:`<div class="row"><span></span><button type="button" class="link" id="fg">نسيت كلمة السر؟</button></div>`}
+    <div class="msg" id="m"></div>
+    <button class="btn b-main w100" id="go" type="submit">${up?"إنشاء الحساب":"دخول"}</button>
+  </form>
+  <p class="row" style="justify-content:center;margin-top:18px;color:var(--mute)">${up?'عندك حساب؟ <button type="button" class="link" id="sw">ادخل</button>':'ما عندكش حساب؟ <button type="button" class="link" id="sw">افتح متجرك</button>'}</p>`;
+  $("t-up").onclick=()=>{MODE="up";authView();};$("t-in").onclick=()=>{MODE="in";authView();};$("sw").onclick=()=>{MODE=up?"in":"up";authView();};
+  $("eye").onclick=()=>{const p=$("pw");p.type=p.type==="password"?"text":"password";$("eye").innerHTML=ic(p.type==="password"?"eye":"eyeoff");};
+  if(up)$("pw").oninput=()=>{const v=$("pw").value;let s=0;if(v.length>=8)s++;if(/\d/.test(v)&&/[a-z]/i.test(v))s++;if(v.length>=12||/[^a-z0-9]/i.test(v))s++;
+    $("mt").style.width=[8,34,67,100][s]+"%";$("mt").style.background=["#e5484d","#e5484d","#f5a524","#16a34a"][s];$("mh").textContent=["8 أحرف على الأقل، فيها أرقام وحروف.","ضعيفة","مليحة","قوية"][s];};
+  if(!up)$("fg").onclick=forgotView;
+  $("f").onsubmit=async e=>{e.preventDefault();const email=$("em").value.trim(),password=$("pw").value;
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email))return msg("m","اكتب بريد إلكتروني صحيح.");
+    if(password.length<8)return msg("m","كلمة السر لازم 8 أحرف على الأقل.");
+    if(up&&!(/\d/.test(password)&&/[a-z]/i.test(password)))return msg("m","زيد أرقام وحروف في كلمة السر.");
+    if(up&&!$("tos").checked)return msg("m","لازم توافق على شروط الاستعمال.");
+    msg("m","");busy($("go"),true);
+    try{
+      if(up){const {data,error}=await sb.auth.signUp({email,password,options:{emailRedirectTo:SITE+"join.html"}});if(error)throw error;
+        if(data.session)return route();
+        if(data.user&&data.user.identities&&data.user.identities.length===0)throw new Error("already registered");
+        sentView(email);}
+      else{const {error}=await sb.auth.signInWithPassword({email,password});if(error)throw error;route();}
+    }catch(err){busy($("go"),false);msg("m",ar(err));}
+  };
+}
+function sentView(email){
+  V.innerHTML=`<div class="state"><div class="big" style="background:var(--brand-l);color:var(--brand)">${ic("mail")}</div><h1>أكّد بريدك</h1>
+  <p class="lead">بعثنا رابط تأكيد لـ <b dir="ltr">${esc(email)}</b>. افتحو من نفس الهاتف ولا الكمبيوتر، وترجع هنا وحدك باش تكمل متجرك.</p>
+  <div class="msg info">ما لقيتوش؟ شوف في Spam ولا Promotions.</div>
+  <button class="btn b-line w100" id="rs" type="button" style="margin-top:14px">عاود ابعث الرابط</button><div class="msg" id="m" style="margin-top:10px"></div>
+  <button class="btn b-dark w100" id="bk" type="button" style="margin-top:10px">رجوع للدخول</button></div>`;
+  $("bk").onclick=()=>{MODE="in";authView();};
+  $("rs").onclick=async()=>{busy($("rs"),true);const {error}=await sb.auth.resend({type:"signup",email,options:{emailRedirectTo:SITE+"join.html"}});busy($("rs"),false);msg("m",error?ar(error):"بعثناه مرة أخرى.",error?"err":"ok");};
+}
+function forgotView(){
+  V.innerHTML=`<h1>نسيت كلمة السر؟</h1><p class="lead">اكتب بريدك ونبعثولك رابط باش تبدلها.</p>
+  <form class="form" id="f"><div class="fld"><label for="em">البريد الإلكتروني</label><input id="em" type="email" dir="ltr" autocomplete="email" required></div><div class="msg" id="m"></div>
+  <button class="btn b-main w100" id="go">ابعث الرابط</button><button class="btn b-line w100" type="button" id="bk">رجوع</button></form>`;
+  $("bk").onclick=()=>{MODE="in";authView();};
+  $("f").onsubmit=async e=>{e.preventDefault();busy($("go"),true);const {error}=await sb.auth.resetPasswordForEmail($("em").value.trim(),{redirectTo:SITE+"join.html"});busy($("go"),false);
+    msg("m",error?ar(error):"إذا كان عندك حساب، راح يوصلك الرابط في دقيقة.",error?"err":"ok");};
+}
+function resetView(){
+  V.innerHTML=`<h1>كلمة سر جديدة</h1><p class="lead">اختار كلمة سر قوية ما تستعملهاش في حتى موقع آخر.</p>
+  <form class="form" id="f"><div class="fld"><label for="pw">كلمة السر الجديدة</label><input id="pw" type="password" dir="ltr" autocomplete="new-password" minlength="8" required></div><div class="msg" id="m"></div><button class="btn b-main w100" id="go">حفظ</button></form>`;
+  $("f").onsubmit=async e=>{e.preventDefault();const p=$("pw").value;if(p.length<8||!(/\d/.test(p)&&/[a-z]/i.test(p)))return msg("m","8 أحرف على الأقل، فيها أرقام وحروف.");
+    busy($("go"),true);const {error}=await sb.auth.updateUser({password:p});busy($("go"),false);if(error)return msg("m",ar(error));toast("تبدلت كلمة السر");route();};
+}
+
+/* ===== onboarding wizard ===== */
+function stepsBar(){return `<div class="steps">${["المتجر","التواصل","التوثيق"].map((t,k)=>`<div class="${k<STEP?"on":""}"><i></i><span>${k+1}. ${t}</span></div>`).join("")}</div>`;}
+function wizard(){
+  const d=DRAFT;
+  if(STEP===1){
+    V.innerHTML=`${stepsBar()}<h1>عرّفنا بمتجرك</h1><p class="lead">هذي المعلومات يشوفها الزبون في متجرك.</p>
+    <form class="form" id="f" novalidate>
+      <div class="fld"><label for="nm">اسم المتجر</label><input id="nm" maxlength="60" value="${esc(d.name||"")}" placeholder="مثلاً: أمين للعطور والساعات" required></div>
+      <div class="fld"><label for="sl">رابط متجرك (بالحروف اللاتينية)</label><div class="prefix"><span>safardz.github.io/</span><input id="sl" dir="ltr" maxlength="30" value="${esc(d.slug||"")}" placeholder="amine-parfum" autocomplete="off" autocapitalize="off" spellcheck="false"></div><span class="hint" id="slh">حروف صغيرة وأرقام و - برك. ما يتبدلش من بعد.</span></div>
+      <div class="fld"><label for="tg">جملة تعريف قصيرة</label><textarea id="tg" rows="2" maxlength="400" placeholder="مثلاً: عطور وساعات أصلية من دبي، نسافر كل شهر.">${esc(d.tagline||"")}</textarea></div>
+      <div class="msg" id="m"></div><button class="btn b-main w100" id="go">التالي</button>
+      <button class="btn b-line w100" type="button" id="lo">${ic("logout")}خروج من الحساب</button>
+    </form>`;
+    let ok=!!d.slugOk,t;
+    const check=()=>{clearTimeout(t);const v=$("sl").value.trim().toLowerCase();ok=false;
+      if(!/^[a-z0-9][a-z0-9-]{1,28}[a-z0-9]$/.test(v)){$("slh").innerHTML='<span class="bad">من 3 حتى 30 حرف: a-z و 0-9 و - (ماشي في البداية ولا النهاية).</span>';return;}
+      $("slh").textContent="نتحققو…";t=setTimeout(async()=>{const {data,error}=await sb.rpc("safar_slug_available",{p_slug:v});
+        if($("sl").value.trim().toLowerCase()!==v)return;ok=!error&&data===true;$("slh").innerHTML=ok?`<span class="ok">✓ متاح: safardz.github.io/${esc(v)}</span>`:'<span class="bad">محجوز. جرّب اسم آخر.</span>';},380);};
+    $("sl").oninput=()=>{$("sl").value=$("sl").value.toLowerCase().replace(/[^a-z0-9-]/g,"");check();};if(d.slug)check();
+    $("lo").onclick=async()=>{await sb.auth.signOut();route();};
+    $("f").onsubmit=e=>{e.preventDefault();const name=$("nm").value.trim();if(name.length<2)return msg("m","اكتب اسم المتجر.");
+      if(!ok)return msg("m","اختار رابط متاح لمتجرك.");Object.assign(d,{name,slug:$("sl").value.trim().toLowerCase(),tagline:$("tg").value.trim(),slugOk:true});STEP=2;wizard();};
+  }
+  if(STEP===2){
+    V.innerHTML=`${stepsBar()}<h1>كيفاش يتواصلو معاك؟</h1><p class="lead">الطلبات توصلك على رقم واتساب هذا.</p>
+    <form class="form" id="f" novalidate>
+      <div class="g2"><div class="fld"><label for="ph">رقم واتساب</label><input id="ph" type="tel" dir="ltr" inputmode="tel" placeholder="0555 12 34 56" value="${esc(d.phone||"")}" autocomplete="tel"></div>
+      <div class="fld"><label for="cp">رقم الاتصال (اختياري)</label><input id="cp" type="tel" dir="ltr" inputmode="tel" value="${esc(d.call||"")}"></div></div>
+      <div class="g2"><div class="fld"><label for="wl">الولاية</label><select id="wl"><option value="">اختار…</option>${wilOpts(d.wilaya)}</select></div>
+      <div class="fld"><label for="ad">المدينة / البلدية</label><input id="ad" maxlength="120" value="${esc(d.address||"")}"></div></div>
+      <div class="msg" id="m"></div>
+      <div class="g2"><button class="btn b-line" type="button" id="bk">رجوع</button><button class="btn b-main" id="go">التالي</button></div>
+    </form>`;
+    $("bk").onclick=()=>{STEP=1;wizard();};
+    $("f").onsubmit=e=>{e.preventDefault();const ph=normPhone($("ph").value),cp=normPhone($("cp").value);
+      if(!phoneOk(ph))return msg("m","رقم واتساب لازم 10 أرقام ويبدا بـ 05 ولا 06 ولا 07.");
+      if(cp&&!/^0\d{8,9}$/.test(cp))return msg("m","رقم الاتصال غالط.");
+      if(!$("wl").value)return msg("m","اختار الولاية.");
+      Object.assign(d,{phone:ph,call:cp,wilaya:+$("wl").value,address:$("ad").value.trim()});STEP=3;wizard();};
+  }
+  if(STEP===3){
+    V.innerHTML=`${stepsBar()}<h1>توثيق المستورد</h1><p class="lead">باش نحميو الزبائن، نفعّلو غير المستوردين الموثقين. وثائقك تبقى <b>خاصة</b>: ما يشوفها غيرك وفريق SAFAR DZ.</p>
+    <form class="form" id="f" novalidate>
+      <div class="fld"><label for="fn">الاسم واللقب (كيما في البطاقة)</label><input id="fn" maxlength="80" value="${esc(d.full_name||"")}" autocomplete="name"></div>
+      <div class="fld"><label for="cn">رقم بطاقة المستورد المصغر</label><input id="cn" dir="ltr" maxlength="40" value="${esc(d.card_number||"")}"></div>
+      <div class="fld"><label>صورة البطاقة</label><label class="drop" id="dz"><input type="file" id="cf" accept="image/*,application/pdf"><span id="dzt">${ic("upload","width:26px;height:26px;margin:0 auto 6px;display:block")}<b>اختار صورة ولا PDF</b>من الهاتف ولا الكمبيوتر · 5MB كحد أقصى</span></label></div>
+      <div class="preview"><span data-i="store"></span><div><b>${esc(d.name)}</b><span>safardz.github.io/${esc(d.slug)}</span></div></div>
+      <div class="msg" id="m"></div>
+      <div class="g2"><button class="btn b-line" type="button" id="bk">رجوع</button><button class="btn b-main" id="go">ابعث للمراجعة</button></div>
+    </form>`;
+    paintIcons(V);
+    let file=null;
+    $("cf").onchange=()=>{file=$("cf").files[0]||null;if(!file)return;if(file.size>5*1024*1024){file=null;return msg("m","الملف كبير بزاف (أكثر من 5MB).");}msg("m","");
+      $("dzt").innerHTML=/^image\//.test(file.type)?`<img src="${URL.createObjectURL(file)}" alt=""><b>${esc(file.name)}</b>`:`${ic("id","width:26px;height:26px;margin:0 auto 6px;display:block")}<b>${esc(file.name)}</b>`;};
+    $("bk").onclick=()=>{d.full_name=$("fn").value;d.card_number=$("cn").value;STEP=2;wizard();};
+    $("f").onsubmit=async e=>{e.preventDefault();const fn=$("fn").value.trim(),cn=$("cn").value.trim();
+      if(fn.length<3)return msg("m","اكتب الاسم واللقب.");if(cn.length<3)return msg("m","اكتب رقم البطاقة.");if(!file)return msg("m","زيد صورة البطاقة.");
+      busy($("go"),true);msg("m","");
+      try{
+        let blob=file,ext="pdf",type=file.type;if(/^image\//.test(file.type)){blob=await shrink(file,1800,.85);ext="jpg";type="image/jpeg";}
+        const path=`${USER.id}/card-${rid()}.${ext}`;
+        const up=await sb.storage.from("safar-docs").upload(path,blob,{contentType:type});if(up.error)throw up.error;
+        const meta={sub:"سلعة مستوردة · "+W[d.wilaya-1],hero:{img:"1760565030309-8a56664f8901",eye:"وصلت سلعة جديدة",h:"سلعة جديدة وصلت\nبأسعار الوصول",p:d.tagline||"الدفع عند الاستلام والتوصيل لـ 58 ولاية."},next:[],arrived:[],dealEnd:null};
+        const ins=await sb.from("importers").insert({slug:d.slug,name:d.name,tagline:d.tagline||null,phone:d.phone,call_phone:d.call||null,wilaya:d.wilaya,address:d.address||null,meta}).select().single();
+        if(ins.error)throw ins.error;
+        const doc=await sb.from("importer_docs").insert({importer_id:ins.data.id,full_name:fn,card_number:cn,card_path:path});if(doc.error)throw doc.error;
+        IMP=ins.data;DRAFT={};STEP=1;statusView();
+      }catch(err){busy($("go"),false);msg("m",ar(err));if(/slug/i.test(String(err.message))){STEP=1;d.slugOk=false;}}
+    };
+  }
+}
+
+/* ===== status after sending ===== */
+async function statusView(){
+  const s=IMP.status;
+  const {data:doc}=await sb.from("importer_docs").select("admin_note").eq("importer_id",IMP.id).maybeSingle();
+  const C={pending:["var(--warn-l)","var(--warn)","clock","متجرك في المراجعة","وصلنا طلبك. نراجعو البطاقة ونفعّلو متجرك في أقل من 24 ساعة. في هاذ الوقت تقدر تحضّر سلعتك من لوحة التحكم."],
+    rejected:["#fff0ec","#b3261e","x","ما تفعّلش المتجر","راجع الملاحظة تحت وتواصل معانا باش نصلحو."],
+    suspended:["#f1f2f4","#4b5563","clock","المتجر موقوف مؤقتاً","تواصل معانا باش نرجعو نشعلوه."]}[s]||[];
+  V.innerHTML=`<div class="state"><div class="big" style="background:${C[0]};color:${C[1]}">${ic(C[2])}</div><span class="chip st-${s}"><i></i>${STATUS[s]}</span><h1 style="margin-top:10px">${C[3]}</h1><p class="lead">${C[4]}</p>
+  ${doc&&doc.admin_note?`<div class="msg info" style="text-align:start">ملاحظة الفريق: ${esc(doc.admin_note)}</div>`:""}
+  <div class="preview" style="text-align:start;margin:16px 0"><span data-i="store"></span><div><b>${esc(IMP.name)}</b><span>safardz.github.io/${esc(IMP.slug)}</span></div></div>
+  <a class="btn b-main w100" href="dashboard.html">${ic("box")}حضّر سلعتك في لوحة التحكم</a>
+  <button class="btn b-line w100" id="lo" type="button" style="margin-top:10px">${ic("logout")}خروج</button></div>`;
+  paintIcons(V);$("lo").onclick=async()=>{await sb.auth.signOut();MODE="in";route();};
+}
+route();
+</script>
+</body>
+</html>
