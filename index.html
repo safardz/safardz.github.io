@@ -121,7 +121,7 @@ header.top{background:var(--card);position:sticky;top:0;z-index:30;border-bottom
 .jet{width:26px;height:26px;color:var(--ink);filter:drop-shadow(0 3px 4px rgba(0,0,0,.3))}
 .jet svg{width:100%;height:100%}
 /* city trip cards */
-.cities{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:-6px 0 16px;position:relative;z-index:4}
+.cities{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:-6px 0 16px;position:relative;z-index:4}
 .city{position:relative;border-radius:20px;overflow:hidden;min-height:190px;color:#fff;display:flex;flex-direction:column;justify-content:flex-end;padding:16px;box-shadow:var(--sh);text-align:start}
 .city img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s}
 .city:hover img{transform:scale(1.06)}
