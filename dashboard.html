@@ -171,7 +171,7 @@ function editProduct(p){
     <div class="imgpick"><span class="ph" id="pi">${img?`<img src="${esc(img)}" alt="">`:ic("box","width:30px;height:30px")}</span><div style="display:grid;gap:6px"><label class="btn b-dark b-sm" style="position:relative;overflow:hidden">${ic("upload")}${img?"بدّل الصورة":"زيد صورة"}<input type="file" id="pfile" accept="image/*" style="position:absolute;inset:0;opacity:0;cursor:pointer"></label><span class="hint" style="font-size:12px;color:var(--mute)">صورة مربعة وواضحة، على خلفية بيضاء خير.</span></div></div>
     <div class="fld"><label for="p-n">اسم المنتج</label><input id="p-n" maxlength="120" value="${esc(p.name)}" placeholder="مثلاً: عطر رجالي Oud · 100 مل"></div>
     <div class="g2"><div class="fld"><label for="p-c">القسم</label><select id="p-c"><option value="">اختار…</option>${CATS.map(c=>`<option${c===p.category?" selected":""}>${c}</option>`).join("")}</select></div>
-    <div class="fld"><label for="p-t">من أي سفرة؟</label><select id="p-t"><option value="">—</option>${Object.keys(TRIPN).map(c=>`<option value="${c}"${c===p.trip?" selected":""}>${TRIPN[c]}</option>`).join("")}</select></div></div>
+    <div class="fld"><label for="p-t">من أي بلاد؟</label><select id="p-t"><option value="">—</option>${Object.keys(TRIPN).map(c=>`<option value="${c}"${c===p.trip?" selected":""}>${TRIPN[c]}</option>`).join("")}</select></div></div>
     <div class="g3"><div class="fld"><label for="p-p">سعر الحبة (دج)</label><input id="p-p" type="number" inputmode="numeric" min="0" value="${p.price??""}"></div>
     <div class="fld"><label for="p-o">قبل التخفيض</label><input id="p-o" type="number" inputmode="numeric" min="0" value="${p.old_price??""}" placeholder="اختياري"></div>
     <div class="fld"><label for="p-q">الكمية المتوفرة</label><input id="p-q" type="number" inputmode="numeric" min="0" value="${p.stock_qty??0}"></div></div>
@@ -206,10 +206,10 @@ function vTrips(){
   const m=IMP.meta;m.arrived=m.arrived||[];m.next=m.next||[];m.hero=m.hero||{};
   const sel=(v)=>Object.keys(TRIPN).map(c=>`<option value="${c}"${c===v?" selected":""}>${TRIPN[c]}</option>`).join("");
   M.innerHTML=`${banner()}<div class="head"><div><h1>السفرات والعروض</h1><div class="sub">هذا اللي يبان في الخريطة وفي أعلى متجرك.</div></div></div>
-  <div class="box" style="margin-bottom:14px"><p class="sec-t">السفرات اللي وصلت</p><p class="sec-d">كل سفرة تولي بطاقة بصورة المدينة، وتربط بيها السلعة.</p><div id="ar"></div><button class="btn b-line b-sm" id="ar-add">${ic("plus")}سفرة وصلت</button></div>
+  <div class="box" style="margin-bottom:14px"><p class="sec-t">السلعة اللي وصلت</p><p class="sec-d">كل بلاد تولي بطاقة بصورتها في متجرك وفي الخريطة.</p><div id="ar"></div><button class="btn b-line b-sm" id="ar-add">${ic("plus")}سفرة وصلت</button></div>
   <div class="box" style="margin-bottom:14px"><p class="sec-t">السفرات الجاية (الحجز المسبق)</p><p class="sec-d">المحلات تحجز عندك قبل ما تسافر.</p><div id="nx"></div><button class="btn b-line b-sm" id="nx-add">${ic("plus")}سفرة جاية</button></div>
   <div class="box" style="margin-bottom:14px"><p class="sec-t">البانر وعروض الوصول</p><div class="form">
-    <div class="fld"><label for="h-e">السطر الصغير</label><input id="h-e" maxlength="60" value="${esc(m.hero.eye||"")}" placeholder="وصلت سفرة إسطنبول · 12 نوفمبر"></div>
+    <div class="fld"><label for="h-e">السطر الصغير</label><input id="h-e" maxlength="60" value="${esc(m.hero.eye||"")}" placeholder="وصلت سلعة تركيا · 12 نوفمبر"></div>
     <div class="fld"><label for="h-h">العنوان الكبير</label><input id="h-h" maxlength="60" value="${esc(String(m.hero.h||"").replace(/\n/g," "))}"></div>
     <div class="fld"><label for="h-p">الوصف</label><input id="h-p" maxlength="140" value="${esc(m.hero.p||"")}"></div>
     <div class="fld"><label for="h-d">عروض الوصول تنتهي يوم</label><input id="h-d" type="datetime-local" value="${esc(String(m.dealEnd||"").slice(0,16))}"><span class="hint">العداد يبان فوق التخفيضات. خليه فارغ إذا ما عندكش عرض.</span></div>
@@ -242,6 +242,12 @@ function vSettings(){
     <div class="g2"><div class="fld"><label for="s-p">واتساب الطلبات</label><input id="s-p" type="tel" dir="ltr" value="${esc(IMP.phone||"")}"></div><div class="fld"><label for="s-c">رقم الاتصال</label><input id="s-c" type="tel" dir="ltr" value="${esc(IMP.call_phone||"")}"></div></div>
     <div class="g2"><div class="fld"><label for="s-w">الولاية</label><select id="s-w">${wilOpts(IMP.wilaya)}</select></div><div class="fld"><label for="s-a">المدينة / البلدية</label><input id="s-a" maxlength="120" value="${esc(IMP.address||"")}"></div></div>
     <div class="msg" id="sm"></div><button class="btn b-main w100" id="ss">حفظ</button></form></div>
+  <div class="box" style="margin-bottom:14px"><p class="sec-t">صورة البروفايل</p><p class="sec-d">تبان في متجرك وفي قائمة المستوردين.</p>
+    <div style="display:flex;gap:12px;align-items:center"><span id="avp" style="width:72px;height:72px;border-radius:20px;background:var(--brand-l);color:var(--brand);display:grid;place-items:center;overflow:hidden">${IMP.meta.avatar?`<img src="${esc(IMP.meta.avatar)}" alt="" style="width:100%;height:100%;object-fit:cover">`:ic("store","width:30px;height:30px")}</span>
+    <label class="btn b-line b-sm" style="position:relative;overflow:hidden">${ic("upload")}${IMP.meta.avatar?"بدّل الصورة":"زيد صورة"}<input type="file" id="avf" accept="image/*" style="position:absolute;inset:0;opacity:0;cursor:pointer"></label></div></div>
+  <div class="box" style="margin-bottom:14px"><p class="sec-t">صفحاتك في السوشيال ميديا</p><p class="sec-d">تبان في متجرك. المحلات تثق كي تشوف صفحتك الحقيقية وسلعتك فيها.</p>
+    <form class="form" id="sof">${[["ig","Instagram","instagram.com/"],["fb","Facebook","facebook.com/"],["tt","TikTok","tiktok.com/@"]].map(([k,n,p])=>`<div class="fld"><label for="so-${k}">${n}</label><div class="prefix"><span>${p}</span><input id="so-${k}" dir="ltr" maxlength="60" value="${esc(((IMP.meta.social||{})[k])||"")}" placeholder="اسم الحساب" autocapitalize="off" spellcheck="false"></div></div>`).join("")}
+    <div class="msg" id="som"></div><button class="btn b-dark" id="sob">حفظ الروابط</button></form></div>
   <div class="box"><p class="sec-t">الأمان</p><p class="sec-d">بدّل كلمة السر. استعمل وحدة ما تستعملهاش في حتى موقع آخر.</p>
     <form class="form" id="pwf"><div class="fld"><label for="np">كلمة سر جديدة</label><input id="np" type="password" dir="ltr" autocomplete="new-password" minlength="8"></div><div class="msg" id="pwm"></div><button class="btn b-dark" id="pwb">بدّل كلمة السر</button></form></div>`;
   $("sf").onsubmit=async e=>{e.preventDefault();const ph=normPhone($("s-p").value),cp=normPhone($("s-c").value);
@@ -249,6 +255,14 @@ function vSettings(){
     const row={name:$("s-n").value.trim(),tagline:$("s-t").value.trim()||null,phone:ph,call_phone:cp||null,wilaya:+$("s-w").value,address:$("s-a").value.trim()||null};
     busy($("ss"),true);const {data,error}=await sb.from("importers").update(row).eq("id",IMP.id).select().single();busy($("ss"),false);
     if(error)return msg("sm",ar(error));IMP=data;msg("sm","");toast("تحفظت المعلومات");};
+  $("avf").onchange=async e=>{const f=e.target.files[0];if(!f)return;$("avp").innerHTML='<span class="spin"></span>';
+    try{const url=await uploadMedia(IMP.id,f);const meta={...IMP.meta,avatar:url};const {error}=await sb.from("importers").update({meta}).eq("id",IMP.id);if(error)throw error;IMP.meta=meta;
+      $("avp").innerHTML=`<img src="${esc(url)}" alt="" style="width:100%;height:100%;object-fit:cover">`;toast("تبدلت الصورة");}catch(err){toast(ar(err));vSettings();paintIcons(M);}};
+  $("sof").onsubmit=async e=>{e.preventDefault();const social={};
+    for(const k of ["ig","fb","tt"]){let v=$("so-"+k).value.trim().replace(/^https?:\/\/(www\.)?(instagram\.com|facebook\.com|fb\.com|tiktok\.com)\/@?/i,"").replace(/^@/,"").replace(/[/?#].*$/,"");
+      if(v&&!/^[A-Za-z0-9._-]{2,60}$/.test(v))return msg("som","اسم الحساب فيه حروف ما تقبلش.");if(v)social[k]=v;}
+    busy($("sob"),true);const meta={...IMP.meta,social};const {error}=await sb.from("importers").update({meta}).eq("id",IMP.id);busy($("sob"),false);
+    if(error)return msg("som",ar(error));IMP.meta=meta;msg("som","");toast("تحفظت الروابط");};
   $("pwf").onsubmit=async e=>{e.preventDefault();const p=$("np").value;if(p.length<8||!(/\d/.test(p)&&/[a-z]/i.test(p)))return msg("pwm","8 أحرف على الأقل، فيها أرقام وحروف.");
     busy($("pwb"),true);const {error}=await sb.auth.updateUser({password:p});busy($("pwb"),false);msg("pwm",error?ar(error):"تبدلت كلمة السر.",error?"err":"ok");if(!error)$("np").value="";};
 }

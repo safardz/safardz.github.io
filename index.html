@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>SAFAR DZ · سفر ماركت</title>
 <meta property="og:title" content="SAFAR DZ · سفر ماركت">
-<meta property="og:description" content="سلعة مستوردة من إسطنبول ودبي وغوانغجو، بسعر الجملة والدفع عند الاستلام.">
+<meta property="og:description" content="سلعة مستوردة من تركيا والصين وفرنسا وألمانيا وإسبانيا، بيع مباشر بالكاش والدفع عند الاستلام.">
 <meta property="og:image" content="https://images.unsplash.com/photo-1653549882026-4c92d25bee4f?w=1200&h=630&fit=crop&auto=format&q=75">
-<meta name="description" content="سلعة مستوردة من إسطنبول ودبي وغوانغجو. الدفع عند الاستلام والتوصيل لـ 58 ولاية، وأسعار جملة للمحلات.">
+<meta name="description" content="منصة المستوردين المصغرين: سلعة من تركيا والصين وأوروبا للمحلات والزبائن. الدفع عند الاستلام والتوصيل لـ 58 ولاية، وأسعار جملة للمحلات.">
 <meta name="theme-color" content="#0b1f17">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -136,6 +136,24 @@ header.top{background:var(--card);position:sticky;top:0;z-index:30;border-bottom
 .city[aria-pressed="true"]{outline:3px solid var(--ink);outline-offset:2px}
 .trip .ic{overflow:hidden;padding:0}
 .trip .ic img{width:100%;height:100%;object-fit:cover}
+.socs{display:flex;gap:6px;flex-wrap:wrap;margin:-6px 0 14px}.soc{font-size:12.5px;font-weight:800;border:1.5px solid var(--line);border-radius:999px;padding:3px 12px;background:#fff}.soc:hover{border-color:var(--ink)}.socl{display:flex;gap:6px;flex-wrap:wrap}
+/* importers directory */
+.imps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.imp{border:1px solid var(--line);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px;transition:box-shadow .2s,transform .2s;background:#fff}
+.imp:hover{box-shadow:0 10px 26px rgba(16,24,40,.1);transform:translateY(-2px)}
+.imp .hd{display:flex;gap:10px;align-items:center}
+.av{width:48px;height:48px;border-radius:14px;overflow:hidden;flex:none;display:grid;place-items:center;font-weight:800;font-size:20px;color:#fff;background:var(--brand)}
+.av img{width:100%;height:100%;object-fit:cover}
+.imp b{display:flex;align-items:center;gap:4px;font-size:14.5px;line-height:1.3}
+.vf{display:inline-grid;place-items:center;width:17px;height:17px;border-radius:50%;background:#1d9bf0;color:#fff;flex:none}
+.vf svg.i{width:11px;height:11px;stroke-width:3}
+.imp .w{font-size:12.5px;color:var(--mute)}
+.flags{display:flex;gap:4px;flex-wrap:wrap}
+.flags span{font-size:11.5px;font-weight:700;background:var(--bg);border-radius:999px;padding:2px 9px}
+.imp .ft{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;color:var(--ink2);margin-top:auto}
+.imp .ft span.go{font-weight:800;color:var(--brand-d)}
+@media (max-width:1024px){.imps{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:640px){.imps{grid-template-columns:1fr 1fr;gap:8px}.imp{padding:12px}.av{width:40px;height:40px}}
 /* trust */
 .trust{display:grid;grid-template-columns:repeat(4,1fr);background:var(--card);border-radius:var(--r);box-shadow:var(--sh);margin-bottom:16px}
 .trust>div{display:flex;gap:10px;align-items:center;padding:14px 16px}
@@ -431,6 +449,7 @@ footer ul{list-style:none;margin:0;padding:0}
       <span class="live"><i></i><span id="hero-eye"></span></span>
       <h1 id="hero-h"></h1>
       <p id="hero-p"></p>
+      <div class="socs" id="socrow" hidden></div>
       <div class="row"><a class="cta2" href="#deals">تسوّق عروض الوصول <span data-i="left"></span></a><a class="cta3" href="#wholesale"><span data-i="store"></span>أسعار الجملة</a></div>
     </div>
   </div>
@@ -439,11 +458,17 @@ footer ul{list-style:none;margin:0;padding:0}
 <main class="wrap" id="home">
   <section class="cities" id="cities" aria-label="السلعة حسب السفرة"></section>
 
+  <section class="sec" id="imps-sec" aria-labelledby="h-imps" hidden>
+    <div class="sh"><h2 id="h-imps"><span data-i="store" style="display:flex"></span>المستوردين</h2><a class="more" href="join.html" style="color:var(--brand-d);font-weight:800">أنت مستورد؟ افتح متجرك ←</a></div>
+    <div class="tabs" id="cty" style="margin-bottom:12px"></div>
+    <div class="imps" id="imps"></div>
+  </section>
+
   <section class="trust" aria-label="لماذا تشري منا">
     <div><span class="ic" data-i="cash"></span><div><b>الدفع عند الاستلام</b><span>ما تخلص حتى توصلك</span></div></div>
     <div><span class="ic" data-i="truck"></span><div><b>توصيل 58 ولاية</b><span>للدار أو للمكتب</span></div></div>
     <div><span class="ic" data-i="shield"></span><div><b>افحص قبل ما تخلص</b><span>تشوف السلعة قدام الموزع</span></div></div>
-    <div><span class="ic" data-i="swap"></span><div><b>استبدال 7 أيام</b><span>إذا وصلت فيها عيب</span></div></div>
+    <div><span class="ic" data-i="store"></span><div><b>بيع مباشر بالكاش</b><span>من المستورد، بلا وسيط وبلا كريدي</span></div></div>
   </section>
 
   <section class="sec" aria-labelledby="h-cats">
@@ -568,28 +593,28 @@ const CATS=[
  {k:"عطور",img:"1615634260167-c8cdede054de"},{k:"تجميل",img:"1765964492963-b0aa8c172431"},{k:"ساعات",img:"1620625515032-6ed0c1790c75"},{k:"أحذية",img:"1491553895911-0055eca6402d"},
  {k:"حقائب",img:"1624687943971-e86af76d57de"},{k:"إلكترونيات",img:"1618366712010-f4ae9c647dcb"},{k:"المطبخ",img:"1564940735784-b15466e8dc09"},{k:"ملابس",img:"1620799140188-3b2a02fd9a77"},{k:"إكسسوارات",img:"1584036553516-bf83210aa16c"}];
 const DEMO={id:null,owner:null,name:"SAFAR DZ",sub:"سفر ماركت · سلعة مستوردة",
- tag:"مستورد مصغر من تلمسان. نسافر كل شهر لإسطنبول ودبي وغوانغجو ونجيب السلعة بأيدينا. الدفع عند الاستلام والتوصيل لـ 58 ولاية.",
+ tag:"مستورد مصغر من تلمسان. نسافر لتركيا والصين وأوروبا ونجيب السلعة بأيدينا. بيع مباشر بالكاش، بلا كريدي. الدفع عند الاستلام والتوصيل لـ 58 ولاية.",
  phone:"",call:"",addr:"تلمسان",
  hero:{img:"1760565030309-8a56664f8901",eye:"وصلت سفرة إسطنبول · 12 نوفمبر",h:"سلعة جديدة وصلت\nبأسعار الوصول",p:"عطور، ساعات، حقائب وأجهزة. الكمية محدودة، والدفع عند الاستلام."},
  dealEnd:"2026-11-20T23:59:00+01:00",
- arrived:[{code:"IST",date:"2026-11-12"},{code:"DXB",date:"2026-10-20"},{code:"CAN",date:"2026-09-28"}],
- next:[{code:"IST",city:"إسطنبول",date:"2026-11-28",open:1},{code:"DXB",city:"دبي",date:"2026-12-15",open:1},{code:"CAN",city:"غوانغجو",date:"2027-01-10",open:0}],
+ arrived:[{code:"IST",date:"2026-11-12"},{code:"MAD",date:"2026-11-02"},{code:"PAR",date:"2026-10-20"},{code:"FRA",date:"2026-10-05"},{code:"CAN",date:"2026-09-28"}],
+ next:[{code:"IST",city:"تركيا",date:"2026-11-28",open:1},{code:"MAD",city:"إسبانيا",date:"2026-12-15",open:1},{code:"CAN",city:"الصين",date:"2027-01-10",open:0}],
  products:[
  {t:"طقم عطور نسائية · 4 روائح مختلفة · 30 مل",c:"عطور",img:"1615634260167-c8cdede054de",p:4900,o:6500,w6:4200,w24:3700,q:14,trip:"IST",badge:"new",colors:[],d:"طقم فيه 4 قارورات زجاج 30 مل بروائح مختلفة: زهري، فانيلا، مسك وعود خفيف.\nمناسب للهدية، ويجي في علبة."},
  {t:"عطر رجالي Noir Intense · 100 مل · ثبات طويل",c:"عطور",img:"1760920250029-36af9369a0bb",p:3500,o:4800,w6:2900,w24:2500,q:22,trip:"IST",badge:"",colors:["100 مل","50 مل"],d:"عطر رجالي برائحة خشبية دافية. يدوم من 8 حتى 10 ساعات على اللبسة."},
- {t:"عطر Crystal Musk يونيسكس · 75 مل",c:"عطور",img:"1761659760494-32b921a2449f",p:2900,o:0,w6:2400,w24:2100,q:30,trip:"DXB",badge:"",colors:[],d:"مسك نظيف وخفيف، يصلح للرجال والنساء."},
+ {t:"عطر Crystal Musk يونيسكس · 75 مل",c:"عطور",img:"1761659760494-32b921a2449f",p:2900,o:0,w6:2400,w24:2100,q:30,trip:"PAR",badge:"",colors:[],d:"مسك نظيف وخفيف، يصلح للرجال والنساء."},
  {t:"كريم ترطيب للوجه بماء الورد · 250 مل",c:"تجميل",img:"1765964492963-b0aa8c172431",p:1200,o:1600,w6:950,w24:800,q:40,trip:"IST",badge:"new",colors:[],d:"كريم ترطيب يومي للبشرة الجافة والعادية. صنع تركي."},
  {t:"سيروم فيتامين C للوجه · 30 مل بالقطّارة",c:"تجميل",img:"1713768704571-6aeb0d0e5105",p:1800,o:2400,w6:1450,w24:1200,q:9,trip:"IST",badge:"",colors:[],d:"سيروم بفيتامين C يعطي البشرة إشراقة. قطرتين في الصباح."},
- {t:"طقم أحمر شفاه مات · 3 ألوان",c:"تجميل",img:"1571646034647-52e6ea84b28c",p:1500,o:0,w6:1150,w24:950,q:35,trip:"DXB",badge:"",colors:["وردي","مرجاني","أحمر"],d:"3 أحمر شفاه بلمسة مات، ما يجفّفش الشفايف."},
+ {t:"طقم أحمر شفاه مات · 3 ألوان",c:"تجميل",img:"1571646034647-52e6ea84b28c",p:1500,o:0,w6:1150,w24:950,q:35,trip:"PAR",badge:"",colors:["وردي","مرجاني","أحمر"],d:"3 أحمر شفاه بلمسة مات، ما يجفّفش الشفايف."},
  {t:"باليت ظلال عيون 35 لون · ألوان ترابية",c:"تجميل",img:"1596704017254-9b121068fb31",p:2200,o:2900,w6:1800,w24:1550,q:18,trip:"CAN",badge:"",colors:[],d:"باليت فيها 35 لون مات ولامع، مع مراية."},
- {t:"ساعة رجالي كلاسيك · سوار ستانلس · مقاومة للماء",c:"ساعات",img:"1620625515032-6ed0c1790c75",p:6500,o:8900,w6:5600,w24:4900,q:6,trip:"DXB",badge:"",colors:["فضي","ذهبي"],d:"ساعة أنالوج بسوار معدن، زجاج مقاوم للخدش، ومقاومة لرشات الماء."},
+ {t:"ساعة رجالي كلاسيك · سوار ستانلس · مقاومة للماء",c:"ساعات",img:"1620625515032-6ed0c1790c75",p:6500,o:8900,w6:5600,w24:4900,q:6,trip:"FRA",badge:"",colors:["فضي","ذهبي"],d:"ساعة أنالوج بسوار معدن، زجاج مقاوم للخدش، ومقاومة لرشات الماء."},
  {t:"ساعة ذكية · شاشة لمس · النبض والخطوات",c:"ساعات",img:"1660844817855-3ecc7ef21f12",p:4200,o:5500,w6:3600,w24:3100,q:25,trip:"CAN",badge:"new",colors:["أبيض","أسود"],d:"تربطها بالهاتف بالبلوتوث: إشعارات، خطوات، نبض ونوم. بطارية 5 أيام."},
  {t:"حذاء رياضي خفيف للجري · 40 حتى 45",c:"أحذية",img:"1491553895911-0055eca6402d",p:5800,o:7500,w6:4900,w24:4300,q:12,trip:"IST",badge:"new",colors:["40","41","42","43","44","45"],d:"حذاء رياضي خفيف بنعل مريح، يصلح للجري واللبسة اليومية."},
  {t:"حقيبة يد نسائية جلد · حجم كبير",c:"حقائب",img:"1624687943971-e86af76d57de",p:4500,o:5900,w6:3800,w24:3300,q:8,trip:"IST",badge:"new",colors:["بني","كامل"],d:"حقيبة جلد بحمالات طويلة، تساع كلش."},
  {t:"حقيبة رجالي جلد للعمل · لابتوب 14 بوصة",c:"حقائب",img:"1603219527847-24c87f552a77",p:6900,o:0,w6:5900,w24:5200,q:5,trip:"IST",badge:"",colors:[],d:"حقيبة كتف جلد فيها جيب للابتوب وجيوب للأوراق."},
  {t:"حقيبة ظهر جلد · للجامعة والسفر",c:"حقائب",img:"1622560480605-d83c853bc5c3",p:3900,o:4900,w6:3300,w24:2900,q:16,trip:"CAN",badge:"",colors:["بني","أسود"],d:"حقيبة ظهر من جلد صناعي متين، فيها جيب داخلي مبطن."},
- {t:"نظارات شمسية UV400 · إطار خفيف",c:"إكسسوارات",img:"1584036553516-bf83210aa16c",p:1500,o:2200,w6:1100,w24:900,q:50,trip:"DXB",badge:"",colors:[],d:"عدسات UV400 تحمي العينين، وإطار خفيف."},
- {t:"سماعات بلوتوث بعزل الضجيج · 30 ساعة",c:"إلكترونيات",img:"1618366712010-f4ae9c647dcb",p:6800,o:8500,w6:5900,w24:5200,q:10,trip:"DXB",badge:"",colors:[],d:"سماعات رأس لاسلكية بعزل الضجيج، وميكروفون للمكالمات."},
+ {t:"نظارات شمسية UV400 · إطار خفيف",c:"إكسسوارات",img:"1584036553516-bf83210aa16c",p:1500,o:2200,w6:1100,w24:900,q:50,trip:"MAD",badge:"",colors:[],d:"عدسات UV400 تحمي العينين، وإطار خفيف."},
+ {t:"سماعات بلوتوث بعزل الضجيج · 30 ساعة",c:"إلكترونيات",img:"1618366712010-f4ae9c647dcb",p:6800,o:8500,w6:5900,w24:5200,q:10,trip:"FRA",badge:"",colors:[],d:"سماعات رأس لاسلكية بعزل الضجيج، وميكروفون للمكالمات."},
  {t:"سماعات رأس لاسلكية · صوت باص قوي",c:"إلكترونيات",img:"1505740420928-5e560c06d30e",p:3200,o:0,w6:2700,w24:2300,q:28,trip:"CAN",badge:"",colors:[],d:"سماعات بلوتوث خفيفة وتنطوى، مناسبة للطريق."},
  {t:"باور بانك 20000 mAh · شحن سريع",c:"إلكترونيات",img:"1594843665794-446ce915d840",p:3400,o:4200,w6:2800,w24:2400,q:3,trip:"CAN",badge:"",colors:["أحمر","أسود"],d:"بطارية خارجية 20000 مللي أمبير، تشحن الهاتف حتى 4 مرات."},
  {t:"غلاية ستانلس على الغاز · 3 لتر",c:"المطبخ",img:"1594213114663-d94db9b17125",p:2600,o:3300,w6:2150,w24:1850,q:20,trip:"IST",badge:"",colors:[],d:"غلاية ستانلس تركية متينة، تسخن بسرعة."},
@@ -600,13 +625,13 @@ DEMO.products.forEach((p,i)=>{p.id="d"+(i+1);});
 let S=JSON.parse(JSON.stringify(DEMO)),LIVE=false;
 
 const mapP=x=>({id:x.id,sid:x.importer_id,t:x.name,c:x.category||"",img:x.image_url||"",p:x.price||0,o:x.old_price||0,w6:x.w6||0,w24:x.w24||0,q:x.stock_qty??0,trip:x.trip||"",badge:x.badge||"",colors:x.options||[],d:x.description||""});
-const PLATFORM={name:"SAFAR DZ",sub:"سفر ماركت · سوق المستوردين",tag:"سوق المستوردين المصغرين في الجزائر: سلعة من إسطنبول ودبي والصين، من عند المستورد مباشرة. الدفع عند الاستلام والتوصيل لـ 58 ولاية.",
-  hero:{img:"1760565030309-8a56664f8901",eye:"سوق المستوردين · 58 ولاية",h:"سلعة السفرة\nمن عند المستورد مباشرة",p:"عطور، ساعات، ملابس وأجهزة من إسطنبول ودبي والصين. اطلب، وخلّص كي توصلك."}};
+const PLATFORM={name:"SAFAR DZ",sub:"سفر ماركت · سوق المستوردين",tag:"منصة المستوردين المصغرين في الجزائر: كل بلاد وسلعتها ومستورديها. المحلات والزبائن يشريو مباشرة من المستورد، بالكاش وبلا كريدي، من عند المستورد مباشرة. الدفع عند الاستلام والتوصيل لـ 58 ولاية.",
+  hero:{img:"1760565030309-8a56664f8901",eye:"منصة المستوردين المصغرين · 58 ولاية",h:"حانوتك يلقى المستورد\nبلا وسيط",p:"اشري مباشرة من المستوردين المصغرين: سلعة تركيا والصين وفرنسا وألمانيا وإسبانيا. بالكاش، بلا كريدي، والدفع عند الاستلام."}};
 let NOTFOUND=false;
 async function loadLive(){
   if(!sb)return false;
   try{
-    let q=sb.from("importers").select("id,slug,name,tagline,phone,call_phone,wilaya,address,meta");
+    let q=sb.from("importers").select("id,slug,name,tagline,phone,call_phone,wilaya,address,meta,verified");
     if(SLUG)q=q.eq("slug",SLUG);
     const {data:imps,error}=await q;
     if(error)return false;
@@ -643,9 +668,8 @@ const unit=(p,q)=>q>=24&&p.w24?p.w24:q>=6&&p.w6?p.w6:p.p;
 const off=p=>p.o&&p.o>p.p?Math.round((1-p.p/p.o)*100):0;
 const waNum=p=>{let d=String(p||"").replace(/\D/g,"");if(d.startsWith("0"))d="213"+d.slice(1);return d;};
 const pretty=p=>{const d=String(p||"").replace(/\D/g,"");return d.length===10?d.replace(/(\d{4})(\d{2})(\d{2})(\d{2})/,"$1 $2 $3 $4"):p;};
-const TRIPN={IST:"إسطنبول",DXB:"دبي",CAN:"غوانغجو",AYT:"أنطاليا",JED:"جدة",TUN:"تونس"};
-const CITY={IST:{ll:[28.9784,41.0082],img:"1653549882026-4c92d25bee4f"},DXB:{ll:[55.2708,25.2048],img:"1512453979798-5ea266f8880c"},CAN:{ll:[113.2644,23.1291],img:"1544594376-0a9a6ae2c997"},
-  AYT:{ll:[30.7133,36.8969],img:"1653549882026-4c92d25bee4f"},JED:{ll:[39.1925,21.4858],img:"1512453979798-5ea266f8880c"},TUN:{ll:[10.1815,36.8065],img:"1653549882026-4c92d25bee4f"}};
+const TRIPN={IST:"تركيا",CAN:"الصين",PAR:"فرنسا",FRA:"ألمانيا",MAD:"إسبانيا"};
+const CITY={IST:{ll:[28.9784,41.0082],img:"1653549882026-4c92d25bee4f"},CAN:{ll:[113.2644,23.1291],img:"1544594376-0a9a6ae2c997"},PAR:{ll:[2.3522,48.8566],img:"1502602898657-3e91760cbb34"},FRA:{ll:[8.6821,50.1109],img:"1626447637943-4c9d412fa8cf"},MAD:{ll:[-3.7038,40.4168],img:"1539037116277-4db20889f2d4"}};
 const WLL={13:[-1.315,34.8828],31:[-0.6337,35.6971],16:[3.0588,36.7538],25:[6.6147,36.365],19:[5.4137,36.1911],23:[7.7667,36.9],9:[2.8277,36.4703],5:[6.1742,35.5559],6:[5.0843,36.7509],15:[4.0458,36.7169],22:[-0.6308,35.1899],7:[5.7281,34.8504],30:[5.3249,31.9493],47:[3.6735,32.4909],27:[0.0892,35.9311],2:[1.3317,36.1647],17:[3.2639,34.6704],46:[-1.14,35.3],29:[0.14,35.4],20:[0.15,34.83]};
 const WCODE={13:"TLM",31:"ORN",16:"ALG",25:"CZL",19:"QSF",23:"AAE",6:"BJA",22:"SBA",7:"BSK",30:"OGX",47:"GHA"};
 const HOME={ll:[-1.315,34.8828],img:"1669097564242-3c6c75aea9a0",code:"TLM",label:"تلمسان"};
@@ -694,17 +718,21 @@ function renderTrips(){
   $("pre-open").innerHTML=MARKET?ic("store")+"أنت مستورد؟ افتح متجرك":ic("chat")+"اطلب سلعة من السفرة الجاية";
   $("trips-sec").hidden=!S.next.length;
 }
+const SOC={ig:["Instagram","https://instagram.com/"],fb:["Facebook","https://facebook.com/"],tt:["TikTok","https://tiktok.com/@"]};
+function socialHtml(m){const s=(m&&m.social)||{};return Object.keys(SOC).filter(k=>s[k]).map(k=>`<a class="soc" href="${SOC[k][1]}${encodeURIComponent(s[k])}" target="_blank" rel="noopener nofollow">${SOC[k][0]}</a>`).join("");}
 function renderShell(){
   $("join-top").hidden=!MARKET;$("mk-top").hidden=MARKET;$("mk-top").href="./";
-  $("brand").textContent=S.name;$("brand-sub").textContent=S.sub;document.title=S.name+" · سفر ماركت";
+  $("brand").textContent=S.name;if(!MARKET&&S.id&&STORES[S.id]&&STORES[S.id].verified)$("brand").insertAdjacentHTML("beforeend",` <span class="vf" title="مستورد موثّق" style="vertical-align:2px">${ic("check")}</span>`);$("brand-sub").textContent=S.sub;document.title=S.name+" · سفر ماركت";
   const h=S.hero;$("map-fb").src=U(h.img,1400);$("hero-eye").textContent=h.eye;$("hero-h").innerHTML=esc(h.h).replace(/\n/g,"<br>");$("hero-p").textContent=h.p;
-  const items=[["cash","الدفع عند الاستلام"],["truck","توصيل لـ 58 ولاية"],["box","سلعة جديدة كل شهر"],["store","أسعار جملة للمحلات"]];
+  const items=[["cash","الدفع عند الاستلام"],["truck","توصيل لـ 58 ولاية"],["box","تركيا · الصين · فرنسا · ألمانيا · إسبانيا"],["store","بيع مباشر بالكاش، بلا كريدي"]];
   $("notice").innerHTML=items.concat(innerWidth<640?items:[]).map(([i,t])=>`<span>${ic(i)}${t}</span>`).join("");
   $("f-name").textContent=S.name;$("f-tag").textContent=S.tag;
   const hasP=!!String(S.phone).replace(/\D/g,""),wa=hasP?"https://wa.me/"+waNum(S.phone):"#";
   $("f-contact").innerHTML=hasP?`<li><a href="${wa}" target="_blank" rel="noopener">واتساب: <span class="num">${esc(pretty(S.phone))}</span></a></li>${S.call?`<li><a href="tel:${esc(String(S.call).replace(/\D/g,""))}">اتصال: <span class="num">${esc(pretty(S.call))}</span></a></li>`:""}<li>${esc(S.addr)}</li>`:`<li>رقم واتساب المستورد يتحط هنا</li><li>${esc(S.addr)}</li>`;
   ["wa-top","bn-wa"].forEach(id=>{const a=$(id);a.href=wa;a.onclick=hasP?null:e=>{e.preventDefault();openWA("السلام عليكم");};});
   $("loc-w").textContent=W[WIL-1];
+  const so=!MARKET&&S.id&&STORES[S.id]?socialHtml(STORES[S.id].meta):"";
+  $("socrow").innerHTML=so;$("socrow").hidden=!so;if(so)$("f-contact").insertAdjacentHTML("beforeend",`<li class="socl">${so}</li>`);
 }
 function tripInfo(code){const ps=S.products.filter(p=>p.trip===code);return{n:ps.length,max:Math.max(0,...ps.map(off))};}
 function setTrip(code,scroll){TRIP=TRIP===code?"":code;renderCities();renderGrid();renderRoutes();if(TRIP&&window.flyCity)flyCity(TRIP);if(scroll)$("all").scrollIntoView({behavior:"smooth",block:"start"});}
@@ -719,7 +747,19 @@ function renderRoutes(){
   $("routes").innerHTML=arrivedList().map(t=>`<button type="button" class="rt" data-rt="${esc(t.code)}" aria-pressed="${TRIP===t.code}"><img src="${esc(U((CITY[t.code]||HOME).img,80))}" alt="">${esc(TRIPN[t.code]||t.code)}<small class="num">${esc(t.code)} → ${HOME.code}</small></button>`).join("");
   $("routes").querySelectorAll("[data-rt]").forEach(b=>b.onclick=()=>setTrip(b.dataset.rt,false));
 }
-function renderAll(){setHome();renderShell();renderCities();renderRoutes();renderCats();renderRail();renderGrid();renderTrips();cartUI();}
+let CTRY="";
+const avatar=s=>s.meta&&s.meta.avatar?`<img src="${esc(s.meta.avatar)}" alt="">`:esc((s.name||"?").trim().charAt(0));
+function renderImps(){
+  const list=Object.values(STORES).map(s=>{const ps=S.products.filter(p=>p.sid===s.id);return{s,n:ps.length,c:[...new Set(ps.map(p=>p.trip).filter(Boolean))]};})
+    .filter(x=>x.n>0).sort((a,b)=>(b.s.verified-a.s.verified)||(b.n-a.n));
+  $("imps-sec").hidden=!MARKET||!list.length;if($("imps-sec").hidden)return;
+  const all=[...new Set(list.flatMap(x=>x.c))];
+  $("cty").innerHTML=`<button type="button" data-ct="" aria-pressed="${!CTRY}">كل البلدان</button>`+Object.keys(TRIPN).filter(c=>all.includes(c)).map(c=>`<button type="button" data-ct="${c}" aria-pressed="${CTRY===c}">${TRIPN[c]}</button>`).join("");
+  $("cty").querySelectorAll("[data-ct]").forEach(b=>b.onclick=()=>{CTRY=b.dataset.ct;renderImps();});
+  $("imps").innerHTML=list.filter(x=>!CTRY||x.c.includes(CTRY)).map(({s,n,c})=>`<a class="imp" href="./?s=${esc(s.slug)}"><div class="hd"><span class="av">${avatar(s)}</span><div><b>${esc(s.name)}${s.verified?`<span class="vf" title="مستورد موثّق">${ic("check")}</span>`:""}</b><span class="w">${esc(W[s.wilaya-1]||"")}</span></div></div>
+    <div class="flags">${c.map(k=>`<span>${esc(TRIPN[k]||k)}</span>`).join("")}</div><div class="ft"><span>${n} منتج</span><span class="go">شوف المتجر ←</span></div></a>`).join("");
+}
+function renderAll(){setHome();renderShell();renderImps();renderCities();renderRoutes();renderCats();renderRail();renderGrid();renderTrips();cartUI();}
 
 function tick(){const t=S.dealEnd?Math.max(0,new Date(S.dealEnd)-Date.now()):0;const tm=document.querySelector(".timer");if(tm)tm.hidden=!t;const d=Math.floor(t/864e5),h=Math.floor(t/36e5)%24,m=Math.floor(t/6e4)%60,s=Math.floor(t/1e3)%60;
   $("t-d").textContent=d;$("t-h").textContent=String(h).padStart(2,"0");$("t-m").textContent=String(m).padStart(2,"0");$("t-s").textContent=String(s).padStart(2,"0");}
@@ -812,7 +852,7 @@ function drawProduct(){
    </div>`:""}
    <div class="box ship">
     <div class="srow"><span class="ic">${ic("truck")}</span><div><b>التوصيل لـ ${esc(W[WIL-1])}: <span class="num">${fmt(f.home)}</span> دج للدار · <span class="num">${fmt(f.desk)}</span> دج للمكتب</b><span>يوصلك في ${f.days} بعد التأكيد</span></div></div>
-    ${STORES[p.sid]?`<a class="srow" href="./?s=${esc(storeOf(p).slug)}"><span class="ic">${ic("store")}</span><div><b>يبيعها: ${esc(storeOf(p).name)}</b><span>مستورد من ${esc(W[storeOf(p).wilaya-1]||"")} · شوف متجرو</span></div></a>`:""}
+    ${STORES[p.sid]?`<a class="srow" href="./?s=${esc(storeOf(p).slug)}"><span class="ic">${ic("store")}</span><div><b>يبيعها: ${esc(storeOf(p).name)}${storeOf(p).verified?" ✓ موثّق":""}</b><span>مستورد من ${esc(W[storeOf(p).wilaya-1]||"")} · شوف متجرو</span></div></a>`:""}
     <div class="srow"><span class="ic">${ic("cash")}</span><div><b>الدفع عند الاستلام</b><span>ما تخلص حتى تشوف السلعة قدامك</span></div></div>
     <div class="srow"><span class="ic">${ic("swap")}</span><div><b>استبدال خلال 7 أيام</b><span>إذا وصلت السلعة فيها عيب</span></div></div>
    </div>

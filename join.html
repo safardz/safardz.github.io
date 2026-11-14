@@ -72,12 +72,12 @@ body{background:#fff}
     <div>
       <div class="mosaic" id="mosaic"></div>
       <h2>متجرك الإلكتروني جاهز<br>في 5 دقايق</h2>
-      <p>سلعتك من إسطنبول ودبي والصين، قدام الزبائن والمحلات في 58 ولاية.</p>
+      <p>سلعتك من تركيا والصين وفرنسا وألمانيا وإسبانيا، قدام المحلات والزبائن في 58 ولاية. بيع مباشر، بالكاش، بلا كريدي.</p>
       <ul class="perks">
         <li><span class="ic" data-i="store"></span><div><b>رابط خاص بيك</b><span>safardz.github.io/اسم-متجرك</span></div></li>
         <li><span class="ic" data-i="chat"></span><div><b>الطلبات توصلك على واتساب</b><span>بالسلعة والكمية والولاية، والدفع عند الاستلام</span></div></li>
         <li><span class="ic" data-i="box"></span><div><b>سعر الحبة وسعر الجملة</b><span>6+ و24+ قطعة، والسعر يتبدل وحدو</span></div></li>
-        <li><span class="ic" data-i="shield"></span><div><b>متاجر موثقة برك</b><span>نتأكدو من بطاقة المستورد المصغر قبل التفعيل</span></div></li>
+        <li><span class="ic" data-i="shield"></span><div><b>صفحاتك في متجرك</b><span>Instagram وFacebook وTikTok، باش المحلات تعرفك وتثق فيك</span></div></li>
       </ul>
     </div>
     <div class="foot">© Hasni Studio · تلمسان</div>
@@ -101,7 +101,7 @@ async function route(){
   if(error){V.innerHTML=`<div class="msg err">${esc(ar(error))}</div>`;return;}
   IMP=data;
   if(!IMP)return wizard();
-  if(IMP.status==="active"){location.replace("dashboard.html");return;}
+  if(IMP.status==="active"||IMP.status==="pending"){location.replace("dashboard.html");return;}
   statusView();
 }
 sb.auth.onAuthStateChange((ev)=>{if(ev==="PASSWORD_RECOVERY")resetView();});
@@ -109,10 +109,11 @@ sb.auth.onAuthStateChange((ev)=>{if(ev==="PASSWORD_RECOVERY")resetView();});
 /* ===== sign in / sign up ===== */
 function authView(){
   const up=MODE==="up";
-  V.innerHTML=`<h1>${up?"افتح متجرك على SAFAR DZ":"مرحبا بيك من جديد"}</h1><p class="lead">${up?"أنشئ حساب المستورد. التسجيل مجاني، والمتجر يتفعل بعد التحقق.":"ادخل لحسابك باش تسيّر متجرك وسلعتك."}</p>
+  V.innerHTML=`<h1>${up?"افتح متجرك على SAFAR DZ":"مرحبا بيك من جديد"}</h1><p class="lead">${up?"بالإيميل ورقم الهاتف برك. مجاني، ومتجرك يخدم في نفس اللحظة.":"ادخل لحسابك باش تسيّر متجرك وسلعتك."}</p>
   <div class="seg" role="tablist"><button type="button" role="tab" id="t-up" aria-selected="${up}">حساب جديد</button><button type="button" role="tab" id="t-in" aria-selected="${!up}">دخول</button></div>
   <form class="form" id="f" novalidate>
     <div class="fld"><label for="em">البريد الإلكتروني</label><input id="em" type="email" dir="ltr" autocomplete="email" inputmode="email" placeholder="name@gmail.com" required></div>
+    ${up?`<div class="fld"><label for="ph0">رقم الهاتف (واتساب)</label><input id="ph0" type="tel" dir="ltr" inputmode="tel" autocomplete="tel" placeholder="0555 12 34 56"><span class="hint">عليه توصلك طلبات الزبائن.</span></div>`:""}
     <div class="fld"><label for="pw">كلمة السر</label><div class="pw"><input id="pw" type="password" dir="ltr" autocomplete="${up?"new-password":"current-password"}" required minlength="8"><button type="button" id="eye" aria-label="بيّن كلمة السر">${ic("eye")}</button></div>
       ${up?'<div class="meter"><i id="mt"></i></div><span class="hint" id="mh">8 أحرف على الأقل، فيها أرقام وحروف.</span>':""}</div>
     ${up?`<label class="chk"><input type="checkbox" id="tos"><span>أوافق على شروط الاستعمال: نبيع سلعة قانونية، والمعلومات اللي نعطيها صحيحة.</span></label>`:`<div class="row"><span></span><button type="button" class="link" id="fg">نسيت كلمة السر؟</button></div>`}
@@ -129,10 +130,12 @@ function authView(){
     if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email))return msg("m","اكتب بريد إلكتروني صحيح.");
     if(password.length<8)return msg("m","كلمة السر لازم 8 أحرف على الأقل.");
     if(up&&!(/\d/.test(password)&&/[a-z]/i.test(password)))return msg("m","زيد أرقام وحروف في كلمة السر.");
+    const phone=up?normPhone($("ph0").value):"";
+    if(up&&!phoneOk(phone))return msg("m","رقم الهاتف لازم 10 أرقام ويبدا بـ 05 ولا 06 ولا 07.");
     if(up&&!$("tos").checked)return msg("m","لازم توافق على شروط الاستعمال.");
     msg("m","");busy($("go"),true);
     try{
-      if(up){const {data,error}=await sb.auth.signUp({email,password,options:{emailRedirectTo:SITE+"join.html"}});if(error)throw error;
+      if(up){const {data,error}=await sb.auth.signUp({email,password,options:{emailRedirectTo:SITE+"join.html",data:{phone}}});if(error)throw error;
         if(data.session)return route();
         if(data.user&&data.user.identities&&data.user.identities.length===0)throw new Error("already registered");
         sentView(email);}
@@ -164,83 +167,50 @@ function resetView(){
     busy($("go"),true);const {error}=await sb.auth.updateUser({password:p});busy($("go"),false);if(error)return msg("m",ar(error));toast("تبدلت كلمة السر");route();};
 }
 
-/* ===== onboarding wizard ===== */
-function stepsBar(){return `<div class="steps">${["المتجر","التواصل","التوثيق"].map((t,k)=>`<div class="${k<STEP?"on":""}"><i></i><span>${k+1}. ${t}</span></div>`).join("")}</div>`;}
+/* ===== quick store setup (one step) ===== */
 function wizard(){
-  const d=DRAFT;
-  if(STEP===1){
-    V.innerHTML=`${stepsBar()}<h1>عرّفنا بمتجرك</h1><p class="lead">هذي المعلومات يشوفها الزبون في متجرك.</p>
-    <form class="form" id="f" novalidate>
-      <div class="fld"><label for="nm">اسم المتجر</label><input id="nm" maxlength="60" value="${esc(d.name||"")}" placeholder="مثلاً: أمين للعطور والساعات" required></div>
-      <div class="fld"><label for="sl">رابط متجرك (بالحروف اللاتينية)</label><div class="prefix"><span>safardz.github.io/</span><input id="sl" dir="ltr" maxlength="30" value="${esc(d.slug||"")}" placeholder="amine-parfum" autocomplete="off" autocapitalize="off" spellcheck="false"></div><span class="hint" id="slh">حروف صغيرة وأرقام و - برك. ما يتبدلش من بعد.</span></div>
-      <div class="fld"><label for="tg">جملة تعريف قصيرة</label><textarea id="tg" rows="2" maxlength="400" placeholder="مثلاً: عطور وساعات أصلية من دبي، نسافر كل شهر.">${esc(d.tagline||"")}</textarea></div>
-      <div class="msg" id="m"></div><button class="btn b-main w100" id="go">التالي</button>
-      <button class="btn b-line w100" type="button" id="lo">${ic("logout")}خروج من الحساب</button>
-    </form>`;
-    let ok=!!d.slugOk,t;
-    const check=()=>{clearTimeout(t);const v=$("sl").value.trim().toLowerCase();ok=false;
-      if(!/^[a-z0-9][a-z0-9-]{1,28}[a-z0-9]$/.test(v)){$("slh").innerHTML='<span class="bad">من 3 حتى 30 حرف: a-z و 0-9 و - (ماشي في البداية ولا النهاية).</span>';return;}
-      $("slh").textContent="نتحققو…";t=setTimeout(async()=>{const {data,error}=await sb.rpc("safar_slug_available",{p_slug:v});
-        if($("sl").value.trim().toLowerCase()!==v)return;ok=!error&&data===true;$("slh").innerHTML=ok?`<span class="ok">✓ متاح: safardz.github.io/${esc(v)}</span>`:'<span class="bad">محجوز. جرّب اسم آخر.</span>';},380);};
-    $("sl").oninput=()=>{$("sl").value=$("sl").value.toLowerCase().replace(/[^a-z0-9-]/g,"");check();};if(d.slug)check();
-    $("lo").onclick=async()=>{await sb.auth.signOut();route();};
-    $("f").onsubmit=e=>{e.preventDefault();const name=$("nm").value.trim();if(name.length<2)return msg("m","اكتب اسم المتجر.");
-      if(!ok)return msg("m","اختار رابط متاح لمتجرك.");Object.assign(d,{name,slug:$("sl").value.trim().toLowerCase(),tagline:$("tg").value.trim(),slugOk:true});STEP=2;wizard();};
-  }
-  if(STEP===2){
-    V.innerHTML=`${stepsBar()}<h1>كيفاش يتواصلو معاك؟</h1><p class="lead">الطلبات توصلك على رقم واتساب هذا.</p>
-    <form class="form" id="f" novalidate>
-      <div class="g2"><div class="fld"><label for="ph">رقم واتساب</label><input id="ph" type="tel" dir="ltr" inputmode="tel" placeholder="0555 12 34 56" value="${esc(d.phone||"")}" autocomplete="tel"></div>
-      <div class="fld"><label for="cp">رقم الاتصال (اختياري)</label><input id="cp" type="tel" dir="ltr" inputmode="tel" value="${esc(d.call||"")}"></div></div>
-      <div class="g2"><div class="fld"><label for="wl">الولاية</label><select id="wl"><option value="">اختار…</option>${wilOpts(d.wilaya)}</select></div>
-      <div class="fld"><label for="ad">المدينة / البلدية</label><input id="ad" maxlength="120" value="${esc(d.address||"")}"></div></div>
-      <div class="msg" id="m"></div>
-      <div class="g2"><button class="btn b-line" type="button" id="bk">رجوع</button><button class="btn b-main" id="go">التالي</button></div>
-    </form>`;
-    $("bk").onclick=()=>{STEP=1;wizard();};
-    $("f").onsubmit=e=>{e.preventDefault();const ph=normPhone($("ph").value),cp=normPhone($("cp").value);
-      if(!phoneOk(ph))return msg("m","رقم واتساب لازم 10 أرقام ويبدا بـ 05 ولا 06 ولا 07.");
-      if(cp&&!/^0\d{8,9}$/.test(cp))return msg("m","رقم الاتصال غالط.");
-      if(!$("wl").value)return msg("m","اختار الولاية.");
-      Object.assign(d,{phone:ph,call:cp,wilaya:+$("wl").value,address:$("ad").value.trim()});STEP=3;wizard();};
-  }
-  if(STEP===3){
-    V.innerHTML=`${stepsBar()}<h1>توثيق المستورد</h1><p class="lead">باش نحميو الزبائن، نفعّلو غير المستوردين الموثقين. وثائقك تبقى <b>خاصة</b>: ما يشوفها غيرك وفريق SAFAR DZ.</p>
-    <form class="form" id="f" novalidate>
-      <div class="fld"><label for="fn">الاسم واللقب (كيما في البطاقة)</label><input id="fn" maxlength="80" value="${esc(d.full_name||"")}" autocomplete="name"></div>
-      <div class="fld"><label for="cn">رقم بطاقة المستورد المصغر</label><input id="cn" dir="ltr" maxlength="40" value="${esc(d.card_number||"")}"></div>
-      <div class="fld"><label>صورة البطاقة</label><label class="drop" id="dz"><input type="file" id="cf" accept="image/*,application/pdf"><span id="dzt">${ic("upload","width:26px;height:26px;margin:0 auto 6px;display:block")}<b>اختار صورة ولا PDF</b>من الهاتف ولا الكمبيوتر · 5MB كحد أقصى</span></label></div>
-      <div class="preview"><span data-i="store"></span><div><b>${esc(d.name)}</b><span>safardz.github.io/${esc(d.slug)}</span></div></div>
-      <div class="msg" id="m"></div>
-      <div class="g2"><button class="btn b-line" type="button" id="bk">رجوع</button><button class="btn b-main" id="go">ابعث للمراجعة</button></div>
-    </form>`;
-    paintIcons(V);
-    let file=null;
-    $("cf").onchange=()=>{file=$("cf").files[0]||null;if(!file)return;if(file.size>5*1024*1024){file=null;return msg("m","الملف كبير بزاف (أكثر من 5MB).");}msg("m","");
-      $("dzt").innerHTML=/^image\//.test(file.type)?`<img src="${URL.createObjectURL(file)}" alt=""><b>${esc(file.name)}</b>`:`${ic("id","width:26px;height:26px;margin:0 auto 6px;display:block")}<b>${esc(file.name)}</b>`;};
-    $("bk").onclick=()=>{d.full_name=$("fn").value;d.card_number=$("cn").value;STEP=2;wizard();};
-    $("f").onsubmit=async e=>{e.preventDefault();const fn=$("fn").value.trim(),cn=$("cn").value.trim();
-      if(fn.length<3)return msg("m","اكتب الاسم واللقب.");if(cn.length<3)return msg("m","اكتب رقم البطاقة.");if(!file)return msg("m","زيد صورة البطاقة.");
-      busy($("go"),true);msg("m","");
-      try{
-        let blob=file,ext="pdf",type=file.type;if(/^image\//.test(file.type)){blob=await shrink(file,1800,.85);ext="jpg";type="image/jpeg";}
-        const path=`${USER.id}/card-${rid()}.${ext}`;
-        const up=await sb.storage.from("safar-docs").upload(path,blob,{contentType:type});if(up.error)throw up.error;
-        const meta={sub:"سلعة مستوردة · "+W[d.wilaya-1],hero:{img:"1760565030309-8a56664f8901",eye:"وصلت سلعة جديدة",h:"سلعة جديدة وصلت\nبأسعار الوصول",p:d.tagline||"الدفع عند الاستلام والتوصيل لـ 58 ولاية."},next:[],arrived:[],dealEnd:null};
-        const ins=await sb.from("importers").insert({slug:d.slug,name:d.name,tagline:d.tagline||null,phone:d.phone,call_phone:d.call||null,wilaya:d.wilaya,address:d.address||null,meta}).select().single();
-        if(ins.error)throw ins.error;
-        const doc=await sb.from("importer_docs").insert({importer_id:ins.data.id,full_name:fn,card_number:cn,card_path:path});if(doc.error)throw doc.error;
-        IMP=ins.data;DRAFT={};STEP=1;statusView();
-      }catch(err){busy($("go"),false);msg("m",ar(err));if(/slug/i.test(String(err.message))){STEP=1;d.slugOk=false;}}
-    };
-  }
+  const d=DRAFT,mphone=(USER.user_metadata||{}).phone||"";
+  V.innerHTML=`<h1>آخر خطوة: متجرك</h1><p class="lead">دقيقة وحدة، ومن بعد تزيد سلعتك.</p>
+  <form class="form" id="f" novalidate>
+    <div class="fld"><label>صورة البروفايل (اختيارية)</label><div style="display:flex;gap:12px;align-items:center"><span id="avp" style="width:64px;height:64px;border-radius:18px;background:var(--brand-l);color:var(--brand);display:grid;place-items:center;overflow:hidden;flex:none">${ic("store","width:28px;height:28px")}</span>
+      <label class="btn b-line b-sm" style="position:relative;overflow:hidden">${ic("upload")}اختار صورة<input type="file" id="avf" accept="image/*" style="position:absolute;inset:0;opacity:0;cursor:pointer"></label><span class="hint" style="font-size:12px;color:var(--mute)">صورتك ولا لوغو متجرك</span></div></div>
+    <div class="fld"><label for="nm">اسم المتجر</label><input id="nm" maxlength="60" value="${esc(d.name||"")}" placeholder="مثلاً: أمين للعطور والساعات" required></div>
+    <div class="fld"><label for="sl">رابط متجرك (بالحروف اللاتينية)</label><div class="prefix"><span>safardz.github.io/</span><input id="sl" dir="ltr" maxlength="30" value="${esc(d.slug||"")}" placeholder="amine-parfum" autocomplete="off" autocapitalize="off" spellcheck="false"></div><span class="hint" id="slh">حروف صغيرة وأرقام و - برك. ما يتبدلش من بعد.</span></div>
+    <div class="g2"><div class="fld"><label for="ph">واتساب الطلبات</label><input id="ph" type="tel" dir="ltr" inputmode="tel" value="${esc(d.phone||mphone)}"></div>
+    <div class="fld"><label for="wl">الولاية</label><select id="wl"><option value="">اختار…</option>${wilOpts(d.wilaya)}</select></div></div>
+    <div class="fld"><label for="tg">جملة تعريف (اختيارية)</label><textarea id="tg" rows="2" maxlength="400" placeholder="مثلاً: عطور وساعات من تركيا وفرنسا، بيع بالجملة والحبة.">${esc(d.tagline||"")}</textarea></div>
+    <div class="msg" id="m"></div><button class="btn b-main w100" id="go">افتح متجري</button>
+    <button class="btn b-line w100" type="button" id="lo">${ic("logout")}خروج من الحساب</button>
+  </form>`;
+  let ok=false,t,av=null;
+  $("avf").onchange=()=>{const f=$("avf").files[0];if(!f)return;if(!/^image\//.test(f.type))return msg("m","اختار صورة.");av=f;$("avp").innerHTML=`<img src="${URL.createObjectURL(f)}" alt="" style="width:100%;height:100%;object-fit:cover">`;};
+  const check=()=>{clearTimeout(t);const v=$("sl").value.trim().toLowerCase();ok=false;
+    if(!/^[a-z0-9][a-z0-9-]{1,28}[a-z0-9]$/.test(v)){$("slh").innerHTML='<span class="bad">من 3 حتى 30 حرف: a-z و 0-9 و - (ماشي في البداية ولا النهاية).</span>';return;}
+    $("slh").textContent="نتحققو…";t=setTimeout(async()=>{const {data,error}=await sb.rpc("safar_slug_available",{p_slug:v});
+      if($("sl").value.trim().toLowerCase()!==v)return;ok=!error&&data===true;$("slh").innerHTML=ok?`<span class="ok">✓ متاح: safardz.github.io/${esc(v)}</span>`:'<span class="bad">محجوز. جرّب اسم آخر.</span>';},380);};
+  $("sl").oninput=()=>{$("sl").value=$("sl").value.toLowerCase().replace(/[^a-z0-9-]/g,"");check();};if(d.slug)check();
+  $("lo").onclick=async()=>{await sb.auth.signOut();route();};
+  $("f").onsubmit=async e=>{e.preventDefault();
+    const name=$("nm").value.trim(),slug=$("sl").value.trim().toLowerCase(),ph=normPhone($("ph").value),wil=+$("wl").value;
+    Object.assign(d,{name,slug,phone:ph,wilaya:wil,tagline:$("tg").value.trim()});
+    if(name.length<2)return msg("m","اكتب اسم المتجر.");if(!ok)return msg("m","اختار رابط متاح لمتجرك.");
+    if(!phoneOk(ph))return msg("m","رقم واتساب لازم 10 أرقام ويبدا بـ 05 ولا 06 ولا 07.");if(!wil)return msg("m","اختار الولاية.");
+    busy($("go"),true);msg("m","");
+    try{
+      const meta={sub:"سلعة مستوردة · "+W[wil-1],hero:{img:"1760565030309-8a56664f8901",eye:"وصلت سلعة جديدة",h:"سلعة جديدة وصلت\nبأسعار الوصول",p:d.tagline||"بيع مباشر بالكاش. الدفع عند الاستلام والتوصيل لـ 58 ولاية."},next:[],arrived:[],dealEnd:null};
+      const ins=await sb.from("importers").insert({slug,name,tagline:d.tagline||null,phone:ph,wilaya:wil,meta}).select().single();
+      if(ins.error)throw ins.error;
+      if(av){try{const url=await uploadMedia(ins.data.id,av);meta.avatar=url;await sb.from("importers").update({meta}).eq("id",ins.data.id);}catch(err){}}
+      DRAFT={};location.replace("dashboard.html#home");
+    }catch(err){busy($("go"),false);msg("m",ar(err));}
+  };
 }
 
 /* ===== status after sending ===== */
 async function statusView(){
   const s=IMP.status;
   const {data:doc}=await sb.from("importer_docs").select("admin_note").eq("importer_id",IMP.id).maybeSingle();
-  const C={pending:["var(--warn-l)","var(--warn)","clock","متجرك في المراجعة","وصلنا طلبك. نراجعو البطاقة ونفعّلو متجرك في أقل من 24 ساعة. في هاذ الوقت تقدر تحضّر سلعتك من لوحة التحكم."],
+  const C={pending:["var(--warn-l)","var(--warn)","clock","متجرك في المراجعة","وصلنا طلبك. نراجعو متجرك ونفعّلوه في أقل من 24 ساعة. في هاذ الوقت تقدر تحضّر سلعتك من لوحة التحكم."],
     rejected:["#fff0ec","#b3261e","x","ما تفعّلش المتجر","راجع الملاحظة تحت وتواصل معانا باش نصلحو."],
     suspended:["#f1f2f4","#4b5563","clock","المتجر موقوف مؤقتاً","تواصل معانا باش نرجعو نشعلوه."]}[s]||[];
   V.innerHTML=`<div class="state"><div class="big" style="background:${C[0]};color:${C[1]}">${ic(C[2])}</div><span class="chip st-${s}"><i></i>${STATUS[s]}</span><h1 style="margin-top:10px">${C[3]}</h1><p class="lead">${C[4]}</p>

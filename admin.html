@@ -40,7 +40,7 @@ header .logo small{color:rgba(255,255,255,.6)}
 <script src="core.js"></script>
 <script>
 paintIcons();
-const M=$("main");let ROWS=[],F="pending",Q="";
+const M=$("main");let ROWS=[],F="all",Q="";
 $("out").onclick=async()=>{await sb.auth.signOut();location.replace("join.html?m=in");};
 async function boot(){
   const {data:{session}}=await sb.auth.getSession();if(!session){location.replace("join.html?m=in");return;}
@@ -50,18 +50,18 @@ async function boot(){
 }
 async function load(){const {data,error}=await sb.rpc("safar_admin_list");if(error){M.innerHTML=`<div class="msg err">${esc(ar(error))}</div>`;return;}ROWS=data||[];draw();}
 function draw(){
-  const c=s=>ROWS.filter(r=>s==="all"||r.status===s).length;
-  const L=ROWS.filter(r=>(F==="all"||r.status===F)&&(!Q||[r.name,r.slug,r.email,r.phone,r.full_name].join(" ").toLowerCase().includes(Q)));
-  M.innerHTML=`<div class="kpis">${[["pending","في الانتظار"],["active","مفعّلة"],["suspended","موقوفة"],["rejected","مرفوضة"],["all","الكل"]].map(([k,t])=>`<button class="kpi" data-f="${k}" aria-pressed="${F===k}"><span>${t}</span><b class="num">${c(k)}</b></button>`).join("")}</div>
+  const okF=(r,s)=>s==="all"||(s==="verified"?r.verified:s==="docs"?(r.card_path&&!r.verified):r.status===s);const c=s=>ROWS.filter(r=>okF(r,s)).length;
+  const L=ROWS.filter(r=>okF(r,F)&&(!Q||[r.name,r.slug,r.email,r.phone,r.full_name].join(" ").toLowerCase().includes(Q)));
+  M.innerHTML=`<div class="kpis">${[["all","الكل"],["active","مفعّلة"],["verified","موثّقة"],["suspended","موقوفة"]].map(([k,t])=>`<button class="kpi" data-f="${k}" aria-pressed="${F===k}"><span>${t}</span><b class="num">${c(k)}</b></button>`).join("")}</div>
   <div class="bar"><label class="search">${ic("search")}<input id="q" placeholder="ابحث: اسم، رابط، بريد، هاتف…" value="${esc(Q)}"></label><button class="btn b-line" id="rf">تحديث</button></div>
   <div class="list">${L.map(r=>{const exp=r.paid_until&&r.paid_until<new Date().toISOString().slice(0,10);
-    return `<div class="it"><div><h3>${esc(r.name)} <span class="chip st-${r.status}"><i></i>${STATUS[r.status]}</span>${exp?'<span class="chip st-rejected"><i></i>الاشتراك فات</span>':""}</h3>
+    return `<div class="it"><div><h3>${esc(r.name)} <span class="chip st-${r.status}"><i></i>${STATUS[r.status]}</span>${r.verified?'<span class="chip" style="background:#e8f4fe;color:#1d6fb8"><i></i>موثّق</span>':""}${exp?'<span class="chip st-rejected"><i></i>الاشتراك فات</span>':""}</h3>
     <div class="meta"><span>${ic("link")}<a href="${esc(SITE+r.slug)}" target="_blank" rel="noopener" class="num" style="color:var(--brand-d)">/${esc(r.slug)}</a></span><span>${ic("mail")}<span class="num">${esc(r.email||"—")}</span></span><span>${ic("chat")}<span class="num">${esc(r.phone||"—")}</span></span><span>${ic("store")}${esc(W[r.wilaya-1]||"—")}</span><span>${ic("box")}${r.products} منتج</span><span>${ic("clock")}${new Date(r.created_at).toLocaleDateString("ar-DZ")}</span></div>
     <div class="meta"><span>${ic("id")}${esc(r.full_name||"—")} · <span class="num">${esc(r.card_number||"—")}</span></span><span>الاشتراك حتى: <b class="num">${esc(r.paid_until||"—")}</b></span>${r.admin_note?`<span>ملاحظة: ${esc(r.admin_note)}</span>`:""}</div></div>
     <div class="acts">${r.card_path?`<button class="btn b-line b-sm" data-doc="${esc(r.card_path)}">${ic("id")}البطاقة</button>`:""}
       ${r.status!=="active"?`<button class="btn b-main b-sm" data-st="active" data-id="${r.id}">${ic("check")}تفعيل</button>`:`<button class="btn b-line b-sm" data-st="suspended" data-id="${r.id}">إيقاف</button>`}
       ${r.status==="pending"?`<button class="btn b-red b-sm" data-st="rejected" data-id="${r.id}">رفض</button>`:""}
-      <button class="btn b-dark b-sm" data-pay="${r.id}">+30 يوم</button><button class="btn b-line b-sm" data-note="${r.id}">ملاحظة</button></div></div>`;}).join("")||`<div class="box" style="text-align:center;color:var(--mute)">ما كاين حتى متجر هنا.</div>`}</div>`;
+      <button class="btn b-line b-sm" data-vf="${r.id}" data-v="${r.verified?0:1}">${r.verified?"نحّي التوثيق":"✓ وثّق"}</button><button class="btn b-dark b-sm" data-pay="${r.id}">+30 يوم</button><button class="btn b-line b-sm" data-note="${r.id}">ملاحظة</button></div></div>`;}).join("")||`<div class="box" style="text-align:center;color:var(--mute)">ما كاين حتى متجر هنا.</div>`}</div>`;
   paintIcons(M);
   M.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{F=b.dataset.f;draw();});
   $("q").oninput=e=>{Q=e.target.value.trim().toLowerCase();const p=e.target.selectionStart;draw();$("q").focus();$("q").setSelectionRange(p,p);};
@@ -69,6 +69,7 @@ function draw(){
   M.querySelectorAll("[data-st]").forEach(b=>b.onclick=async()=>{const st=b.dataset.st;
     if(st==="rejected"){const n=prompt("سبب الرفض (يشوفو المستورد):","");if(n===null)return;await note(b.dataset.id,n);}
     busy(b,true);const {error}=await sb.from("importers").update({status:st}).eq("id",b.dataset.id);if(error){busy(b,false);return toast(ar(error));}toast("تبدلت الحالة");load();});
+  M.querySelectorAll("[data-vf]").forEach(b=>b.onclick=async()=>{busy(b,true);const {error}=await sb.from("importers").update({verified:b.dataset.v==="1"}).eq("id",b.dataset.vf);if(error){busy(b,false);return toast(ar(error));}toast("تبدل التوثيق");load();});
   M.querySelectorAll("[data-pay]").forEach(b=>b.onclick=async()=>{const r=ROWS.find(x=>x.id===b.dataset.pay);const base=r.paid_until&&r.paid_until>new Date().toISOString().slice(0,10)?new Date(r.paid_until):new Date();
     base.setDate(base.getDate()+30);busy(b,true);const {error}=await sb.from("importers").update({paid_until:base.toISOString().slice(0,10)}).eq("id",r.id);if(error){busy(b,false);return toast(ar(error));}toast("زدنا 30 يوم");load();});
   M.querySelectorAll("[data-note]").forEach(b=>b.onclick=async()=>{const r=ROWS.find(x=>x.id===b.dataset.note);const n=prompt("ملاحظة للمستورد:",r.admin_note||"");if(n===null)return;await note(r.id,n);load();});
